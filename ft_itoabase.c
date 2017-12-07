@@ -198,6 +198,17 @@ int flag_0(const char *str, int *i, va_list arg, ...)
 		cpt--;
 		len++;
 	}
+	else if (str[*i] == '+')
+	{
+		ft_putchar('+');
+		(*i)++;
+		cpt--;
+	}
+	else if (str[*i - 2] == '+')
+	{
+		ft_putchar('+');
+		cpt--;
+	}
 	cpt = cpt + ft_atoi(&str[*i]) - ft_strlen(ft_itoa(nb));
 	len =len + cpt - nblen(ft_atoi(&str[*i])) - 1;
 	*i = *i + nblen(ft_atoi(&str[*i]));
@@ -242,8 +253,12 @@ int		option(const char *str, va_list arg, ...)
 			}
 			if (str[i] == '+')
 			{
-				ft_putchar('+');
 				i++;
+				if (str[i] == '0')
+				{
+					i++;
+					len = len + flag_0(str, &i, arg);
+				}
 			}
 			len = len + type_param(str, &i, arg);
 		}
@@ -267,7 +282,7 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je suis %s j'ai %010i ans\n", "Mathieu", 30));
-	ft_printf("%d\n",ft_printf("je suis %s j'ai %010i ans\n", "Mathieu", 30));
+	printf("%d\n",printf("je suis %s j'ai %0+10i ans\n", "Mathieu", 30));
+	ft_printf("%d\n",ft_printf("je suis %s j'ai %0+10i ans\n", "Mathieu", 30));
 	return 0;	
 }
