@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2017/12/07 15:28:35 by mdaunois         ###   ########.fr       */
+/*   Updated: 2017/12/07 17:30:59 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,12 +151,55 @@ int type_param(const char *str, int *i, va_list arg, ...)
 	return (0);
 }
 
+int flag_dies(const char *str, int *i, va_list arg, ...)
+{
+	if (str[*i + 1] == 'o')
+	{
+		ft_putchar('0');
+		(*i)++;
+		return (conv_octal(i, arg));
+	}
+	if (str[*i + 1] == 'x')
+	{
+		(*i)++;
+		return (conv_adresse(i, arg));
+	}
+	return (0);
+}
+
+int flag_0(const char *str, int *i, va_list arg, ...)
+{
+	int cpt;
+	int nb;
+
+	nb = va_arg(arg, int);
+	cpt = 0;
+	if(ft_isdigit(str[*i]))
+	{
+		cpt = ft_atoi(&str[*i]) - ft_strlen(ft_itoa(nb));
+		(*i)++;
+	}
+	if (str[*i] == 'i')
+	{
+		while (cpt > 0)
+		{
+			ft_putchar('0');
+			cpt--;
+		}
+		ft_putnbr(nb);
+		(*i)++;
+		return (ft_strlen(ft_itoa(nb)) - ft_strlen(ft_itoa(nb)));
+	}
+	return (0);
+}
 
 int		option(const char *str, va_list arg, ...)
 {
 	int i;
 	int len;
+	int cpt;
 
+	cpt = 0;
 	len = 0;
 	i = 0;
 	while(str[i])
@@ -164,17 +207,14 @@ int		option(const char *str, va_list arg, ...)
 		if (str[i] == '%')
 		{
 			i++;
-			if (str[i] == '#' && str[i + 1] == 'o')
-			{
-				ft_putchar('0');
-				i++;
-				len = len + conv_octal(&i, arg);
-			}
-			if	(str[i] == '#' && str[i + 1] == 'x')
+			if (str[i] == '#')
+				len = len + flag_dies(str, &i, arg);
+			if (str[i] == '0')
 			{
 				i++;
-				len = len + conv_adresse(&i, arg);
+				len = len + flag_0(str, &i, arg);
 			}
+
 			len = len + type_param(str, &i, arg);
 		}
 		ft_putchar(str[i]);
@@ -197,7 +237,7 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je suis %s j'ai %i ans\n", "Mathieu", 30));
-	ft_printf("%d\n",ft_printf("je suis %s j'ai %i ans\n", "Mathieu", 30));
+	printf("%d\n",printf("je suis %s j'ai %04i ans\n", "Mathieu", 30));
+	ft_printf("%d\n",ft_printf("je suis %s j'ai %04i ans\n", "Mathieu", 30));
 	return 0;	
 }
