@@ -59,6 +59,19 @@ char		*ft_itoabase(long int n, int base)
 	return (ft_strrev(str));
 }
 
+int		nblen(int nb)
+{
+	int i;
+	
+	i = 0;
+	while (nb > 0)
+	{
+		nb = nb / 10;
+		i++;	
+	}
+	return (i);
+}
+
 int conv_octal(int *i, va_list arg, ...)
 {
 	long	o;
@@ -171,24 +184,37 @@ int flag_0(const char *str, int *i, va_list arg, ...)
 {
 	int cpt;
 	int nb;
+	int len;
+	int base;
 
-	nb = va_arg(arg, int);
+	base = 10;
 	cpt = 0;
-	if(ft_isdigit(str[*i]))
+	len = 0;
+	nb = va_arg(arg, int);
+	if(nb < 0)
 	{
-		cpt = ft_atoi(&str[*i]) - ft_strlen(ft_itoa(nb));
-		(*i)++;
+		ft_putchar('-');
+		nb = -nb;
+		cpt--;
+		len++;
 	}
-	if (str[*i] == 'i')
+	cpt = cpt + ft_atoi(&str[*i]) - ft_strlen(ft_itoa(nb));
+	len =len + cpt - nblen(ft_atoi(&str[*i])) - 1;
+	*i = *i + nblen(ft_atoi(&str[*i]));
+	if (str[*i] == 'i' || str[*i] == 'd' ||str[*i] == 'o' || str[*i] == 'x' || str[*i] == 'u')
 	{
+		if (str[*i] == 'o')
+			base = 8;
+		if (str[*i] == 'x')
+			base = 16;
 		while (cpt > 0)
 		{
 			ft_putchar('0');
 			cpt--;
 		}
-		ft_putnbr(nb);
+		ft_putstr(ft_itoabase(nb, base));
 		(*i)++;
-		return (ft_strlen(ft_itoa(nb)) - ft_strlen(ft_itoa(nb)));
+		return (len);
 	}
 	return (0);
 }
@@ -214,7 +240,11 @@ int		option(const char *str, va_list arg, ...)
 				i++;
 				len = len + flag_0(str, &i, arg);
 			}
-
+			if (str[i] == '+')
+			{
+				ft_putchar('+');
+				i++;
+			}
 			len = len + type_param(str, &i, arg);
 		}
 		ft_putchar(str[i]);
@@ -237,7 +267,7 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je suis %s j'ai %04i ans\n", "Mathieu", 30));
-	ft_printf("%d\n",ft_printf("je suis %s j'ai %04i ans\n", "Mathieu", 30));
+	printf("%d\n",printf("je suis %s j'ai %010i ans\n", "Mathieu", 30));
+	ft_printf("%d\n",ft_printf("je suis %s j'ai %010i ans\n", "Mathieu", 30));
 	return 0;	
 }
