@@ -180,6 +180,58 @@ int flag_dies(const char *str, int *i, va_list arg, ...)
 	return (0);
 }
 
+int flag_esp(const char *str, int *i, va_list arg, ...)
+{
+	int cpt;
+	int nb;
+	int len;
+	int base;
+	int pos;
+
+	pos = 0;
+	base = 10;
+	cpt = 0;
+	len = 1;
+	nb = va_arg(arg, int);
+	if (str[*i] == '+')
+	{
+		pos = 1;
+		(*i)++;
+		cpt--;
+	}
+	else if (str[*i - 1] == '+')
+	{
+		pos = 1;
+		cpt--;
+	}
+	cpt = cpt + ft_atoi(&str[*i]) - ft_strlen(ft_itoa(nb));
+	len =len + cpt - nblen(ft_atoi(&str[*i])) - 1;
+	*i = *i + nblen(ft_atoi(&str[*i]));
+	if (str[*i] == 'i' || str[*i] == 'd' ||str[*i] == 'o' || str[*i] == 'x' || str[*i] == 'u')
+	{
+		if (str[*i] == 'o')
+			base = 8;
+		if (str[*i] == 'x')
+			base = 16;
+		while (cpt > 0)
+		{
+			ft_putchar(' ');
+			cpt--;
+		}
+		if (pos == 1)
+			ft_putchar('+');
+		if (nb < 0)
+		{
+			nb = -nb;
+			len++;
+			ft_putchar('-');
+		}
+		ft_putstr(ft_itoabase(nb, base));
+		(*i)++;
+		return (len);
+	}
+	return (0);
+}
 int flag_0(const char *str, int *i, va_list arg, ...)
 {
 	int cpt;
@@ -251,6 +303,10 @@ int		option(const char *str, va_list arg, ...)
 				i++;
 				len = len + flag_0(str, &i, arg);
 			}
+			if (str[i] >= '1' && str[i] <= '9')
+			{
+				len = len + flag_esp(str, &i, arg);
+			}
 			if (str[i] == '+')
 			{
 				i++;
@@ -258,6 +314,10 @@ int		option(const char *str, va_list arg, ...)
 				{
 					i++;
 					len = len + flag_0(str, &i, arg);
+				}
+				if (str[i] >= '1' && str[i] <= '9')
+				{
+					len = len + flag_esp(str, &i, arg);
 				}
 			}
 			len = len + type_param(str, &i, arg);
@@ -282,7 +342,7 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je suis %s j'ai %0+10i ans\n", "Mathieu", 30));
-	ft_printf("%d\n",ft_printf("je suis %s j'ai %0+10i ans\n", "Mathieu", 30));
+	printf("%d\n",printf("je suis %s j'ai %+10o ans\n", "Mathieu", +30));
+	ft_printf("%d\n",ft_printf("je suis %s j'ai %+10o ans\n", "Mathieu", +30));
 	return 0;	
 }
