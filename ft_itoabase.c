@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2017/12/07 17:30:59 by mdaunois         ###   ########.fr       */
+/*   Updated: 2017/12/12 10:58:17 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,9 +124,9 @@ int conv_u_int(int *i, va_list arg, ...)
 
 int conv_exa(int *i, va_list arg, ...)
 {
-	long	x;
+	int	x;
 
-	x = va_arg(arg, long);
+	x = va_arg(arg, int);
 	ft_putstr(ft_itoabase(x, 16));
 	(*i)++;
 	return (ft_strlen(ft_itoabase(x, 16) - 2));
@@ -134,9 +134,9 @@ int conv_exa(int *i, va_list arg, ...)
 
 int conv_adresse(int *i, va_list arg, ...)
 {
-		long	p;
+		int	p;
 
-		p = va_arg(arg, long);
+		p = va_arg(arg, int);
 		ft_putstr("0x");
 		ft_putstr(ft_itoabase(p, 16));
 		(*i)++;
@@ -164,18 +164,52 @@ int type_param(const char *str, int *i, va_list arg, ...)
 	return (0);
 }
 
-int flag_dies(const char *str, int *i, va_list arg, ...)
+
+int flag_neg(const char *str, int *i, va_list arg, ...)
 {
-	if (str[*i + 1] == 'o')
+	int cpt;
+	int nb;
+	int len;
+	int base;
+
+	base = 10;
+	cpt = 0;
+	len = 0;
+	nb = va_arg(arg, int);
+	if (str[*i] == '+')
 	{
-		ft_putchar('0');
-		(*i)++;
-		return (conv_octal(i, arg));
+		ft_putchar('+');
+		//(*i)++;
+		cpt--;
 	}
-	if (str[*i + 1] == 'x')
+	else if (str[*i - 2] == '+')
 	{
+		ft_putchar('+');
+		cpt--;
+	}
+	cpt = cpt + ft_atoi(&str[*i]) - ft_strlen(ft_itoa(nb));
+	len =len + cpt - nblen(ft_atoi(&str[*i])) - 1;
+	*i = *i + nblen(ft_atoi(&str[*i]));
+	if (str[*i] == 'i' || str[*i] == 'd' ||str[*i] == 'o' || str[*i] == 'x' || str[*i] == 'u')
+	{
+		if (str[*i] == 'o')
+			base = 8;
+		if (str[*i] == 'x')
+			base = 16;
+		if (nb < 0)
+		{
+			nb = -nb;
+			len++;
+			ft_putchar('-');
+		}
+		ft_putstr(ft_itoabase(nb, base));
+		while (cpt > 0)
+		{
+			ft_putchar(' ');
+			cpt--;
+		}
 		(*i)++;
-		return (conv_adresse(i, arg));
+		return (len);
 	}
 	return (0);
 }
@@ -232,6 +266,34 @@ int flag_esp(const char *str, int *i, va_list arg, ...)
 	}
 	return (0);
 }
+
+int flag_dies(const char *str, int *i, va_list arg, ...)
+{
+	int len;
+
+	len = 0;
+	if (str[*i + 1] >= '1' && str[*i + 1] <= '9')//condition pas fini!!!!!
+	{
+		(*i)++;
+	//	printf("%c\n", str[*i + 1]);
+		len = len + flag_esp(str, i, arg);
+	}
+	if (str[*i + 1] == 'o')
+	{
+		ft_putchar('0');
+		(*i)++;
+		len = len + conv_octal(i, arg);
+		return (len);
+	}
+	if (str[*i + 1] == 'x')
+	{
+		(*i)++;
+		len = len + conv_adresse(i, arg);
+		return (len);
+	}
+	return (0);
+}
+
 int flag_0(const char *str, int *i, va_list arg, ...)
 {
 	int cpt;
@@ -298,7 +360,7 @@ int		option(const char *str, va_list arg, ...)
 			i++;
 			if (str[i] == '#')
 				len = len + flag_dies(str, &i, arg);
-			if (str[i] == '0')
+			if (str[i] == '0' || str[i] == '.')
 			{
 				i++;
 				len = len + flag_0(str, &i, arg);
@@ -307,10 +369,15 @@ int		option(const char *str, va_list arg, ...)
 			{
 				len = len + flag_esp(str, &i, arg);
 			}
+			if (str[i] == '-')
+			{
+				i++;
+				len = len + flag_neg(str, &i, arg);
+			}
 			if (str[i] == '+')
 			{
 				i++;
-				if (str[i] == '0')
+				if (str[i] == '0' || str[i] == '.')
 				{
 					i++;
 					len = len + flag_0(str, &i, arg);
@@ -318,6 +385,11 @@ int		option(const char *str, va_list arg, ...)
 				if (str[i] >= '1' && str[i] <= '9')
 				{
 					len = len + flag_esp(str, &i, arg);
+				}
+				if (str[i] == '-')
+				{
+					i++;
+					len = len + flag_neg(str, &i, arg);
 				}
 			}
 			len = len + type_param(str, &i, arg);
@@ -342,7 +414,7 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je suis %s j'ai %+10o ans\n", "Mathieu", +30));
-	ft_printf("%d\n",ft_printf("je suis %s j'ai %+10o ans\n", "Mathieu", +30));
+	printf("%d\n",printf("je suis %s j'ai -%0-10i- ans\n", "Mathieu", -30));
+	ft_printf("%d\n",ft_printf("je suis %s j'ai %015o ans\n", "Mathieu", 30));
 	return 0;	
 }
