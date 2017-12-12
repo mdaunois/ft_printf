@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2017/12/12 10:58:17 by mdaunois         ###   ########.fr       */
+/*   Updated: 2017/12/12 15:42:39 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ char		*ft_itoabase(long int n, int base)
 int		nblen(int nb)
 {
 	int i;
-	
+
 	i = 0;
 	while (nb > 0)
 	{
@@ -72,13 +72,13 @@ int		nblen(int nb)
 	return (i);
 }
 
-int conv_octal(int *i, va_list arg, ...)
+int conv_octal(va_list arg, ...)
 {
-	long	o;
+	int	o;
 
-	o = va_arg(arg, long);
+	o = va_arg(arg, int);
 	ft_putstr(ft_itoabase(o, 8));
-	(*i)++;
+//	(*i)++;
 	return (ft_strlen(ft_itoabase(o, 8) - 2));
 }
 
@@ -134,13 +134,13 @@ int conv_exa(int *i, va_list arg, ...)
 
 int conv_adresse(int *i, va_list arg, ...)
 {
-		int	p;
+	int	p;
 
-		p = va_arg(arg, int);
-		ft_putstr("0x");
-		ft_putstr(ft_itoabase(p, 16));
-		(*i)++;
-		return (ft_strlen(ft_itoabase(p, 16)));
+	p = va_arg(arg, int);
+	ft_putstr("0x");
+	ft_putstr(ft_itoabase(p, 16));
+	(*i)++;
+	return (ft_strlen(ft_itoabase(p, 16)));
 }
 
 int type_param(const char *str, int *i, va_list arg, ...)
@@ -154,7 +154,7 @@ int type_param(const char *str, int *i, va_list arg, ...)
 	if (str[*i] == 'u')
 		return (conv_u_int(i, arg));
 	if (str[*i] == 'o')
-		return (conv_octal(i,arg));
+		return (conv_octal(arg));
 	if (str[*i] == 'x')
 		return (conv_exa(i, arg));
 	if (str[*i] == 'p')
@@ -267,6 +267,25 @@ int flag_esp(const char *str, int *i, va_list arg, ...)
 	return (0);
 }
 
+int flag_dies(char type, va_list arg, ...)
+{
+	int len;
+
+	len = 0;
+	if (type == 'o')
+	{
+		ft_putchar('0');
+//		len = len + conv_octal(arg);
+		return (len);
+	}
+	if (type == 'x')
+	{
+		len = len + conv_adresse(0, arg);
+		return (len);
+	}
+	return (0);
+}
+/*
 int flag_dies(const char *str, int *i, va_list arg, ...)
 {
 	int len;
@@ -275,7 +294,7 @@ int flag_dies(const char *str, int *i, va_list arg, ...)
 	if (str[*i + 1] >= '1' && str[*i + 1] <= '9')//condition pas fini!!!!!
 	{
 		(*i)++;
-	//	printf("%c\n", str[*i + 1]);
+		//	printf("%c\n", str[*i + 1]);
 		len = len + flag_esp(str, i, arg);
 	}
 	if (str[*i + 1] == 'o')
@@ -293,7 +312,7 @@ int flag_dies(const char *str, int *i, va_list arg, ...)
 	}
 	return (0);
 }
-
+*/
 int flag_0(const char *str, int *i, va_list arg, ...)
 {
 	int cpt;
@@ -344,56 +363,159 @@ int flag_0(const char *str, int *i, va_list arg, ...)
 	return (0);
 }
 
-int		option(const char *str, va_list arg, ...)
+char *range_option(char *flag)
 {
 	int i;
-	int len;
-	int cpt;
+	char temp;
+	
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == '#')
+		{
+			temp = flag[i];
+			flag[i] = flag[0];
+			flag[0] = temp;
+			return (flag);
+		}
+		i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == '+')
+		{
+			temp = flag[i];
+			flag[i] = flag[0];
+			flag[0] = temp;
+			return (flag);
+		}
+		i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == '-')
+		{
+			temp = flag[i];
+			flag[i] = flag[0];
+			flag[0] = temp;
+			return (flag);
+		}
+	   	i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == '0' && (flag[i - 1] < 1 && flag[i - 1] > 9))
+		{
+			temp = flag[i];
+			flag[i] = flag[0];
+			flag[0] = temp;
+			return (flag);
+		}
+		i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == '.')
+		{
+			temp = flag[i];
+			flag[i] = flag[0];
+			flag[0] = temp;
+			return (flag);
+		}
+		i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == ' ')
+		{
+			temp = flag[i];
+			flag[i] = flag[0];
+			flag[0] = temp;
+			return (flag);
+		}
+		i++;
+	}
+	return (flag);
+}
+int		option(const char *str, va_list arg, ...)
+{
+	int		i;
+	int 	j;
+	int		len;
+	int		cpt;
+	char	*flag;
+	char	type;
 
+	flag = NULL;
 	cpt = 0;
 	len = 0;
 	i = 0;
+	j = 0;
 	while(str[i])
 	{
 		if (str[i] == '%')
 		{
 			i++;
-			if (str[i] == '#')
-				len = len + flag_dies(str, &i, arg);
-			if (str[i] == '0' || str[i] == '.')
+			j = i;
+			while (str[j] != 's' && str[j] != 'i' && str[j] != 'd' && str[j] != 'p' && str[j] != 'x' && str[j] != 'o' && str[j] != 'u' && str[j] != '\0')
 			{
-				i++;
-				len = len + flag_0(str, &i, arg);
+				j++;
 			}
-			if (str[i] >= '1' && str[i] <= '9')
+			type = str[j];
+			j++;
+			flag = ft_strndup(&str[i], j - i);
+			i = j;
+			while (*flag != 0)
 			{
-				len = len + flag_esp(str, &i, arg);
+				flag = range_option(flag);
+				if (flag[0] == '#')
+					len = len + flag_dies(type, arg);
+					len = len + type_param(str, &i, arg);
+		//		printf("%s\n", flag);
+				flag = strdup(&flag[1]);
 			}
-			if (str[i] == '-')
-			{
-				i++;
-				len = len + flag_neg(str, &i, arg);
-			}
-			if (str[i] == '+')
-			{
-				i++;
-				if (str[i] == '0' || str[i] == '.')
-				{
-					i++;
-					len = len + flag_0(str, &i, arg);
-				}
-				if (str[i] >= '1' && str[i] <= '9')
-				{
-					len = len + flag_esp(str, &i, arg);
-				}
-				if (str[i] == '-')
-				{
-					i++;
-					len = len + flag_neg(str, &i, arg);
-				}
-			}
-			len = len + type_param(str, &i, arg);
-		}
+			/*		i++;
+					if (str[i] == '#')
+					len = len + flag_dies(str, &i, arg);
+					if (str[i] == '0' || str[i] == '.')
+					{
+						i++;
+						len = len + flag_0(str, &i, arg);
+					}
+					if (str[i] >= '1' && str[i] <= '9')
+					{
+						len = len + flag_esp(str, &i, arg);
+					}
+					if (str[i] == '-')
+					{
+						i++;
+						len = len + flag_neg(str, &i, arg);
+					}
+					if (str[i] == '+')
+					{
+						i++;
+						if (str[i] == '0' || str[i] == '.')
+						{
+							i++;
+							len = len + flag_0(str, &i, arg);
+						}
+						if (str[i] >= '1' && str[i] <= '9')
+						{
+							len = len + flag_esp(str, &i, arg);
+						}
+						if (str[i] == '-')
+						{
+							i++;
+							len = len + flag_neg(str, &i, arg);
+						}
+					}
+								len = len + type_param(str, &i, arg);
+*/		}
 		ft_putchar(str[i]);
 		i++;	
 	}
@@ -414,7 +536,7 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je suis %s j'ai -%0-10i- ans\n", "Mathieu", -30));
-	ft_printf("%d\n",ft_printf("je suis %s j'ai %015o ans\n", "Mathieu", 30));
+	printf("%d\n",printf("je suis %s j'ai |%#o| ans\n", "Mathieu", 30));
+	printf("%d\n",ft_printf("je suis %s j'ai %#o ans\n", "Mathieu", 30));
 	return 0;	
 }

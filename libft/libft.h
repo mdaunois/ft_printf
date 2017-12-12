@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 16:09:40 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/13 18:03:05 by clecalie         ###   ########.fr       */
+/*   Updated: 2017/12/12 11:15:56 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ char			*ft_strrchr(const char *s, int c);
 char			*ft_strstr(const char *haystack, const char *needle);
 char			*ft_strnstr(const char *haystack, const char *needle,
 		size_t len);
+char			*ft_strndup(const char *s1, size_t size);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
