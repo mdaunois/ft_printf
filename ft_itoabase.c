@@ -176,11 +176,11 @@ char *flag_neg(char *str, char type, char *val)
 {
 	size_t cpt;
 	char *debut;
-	char temp;
+	char *temp;
 
-	debut = ft_strnew(ft_atoi(&str[1]));
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
-//	printf("<%zu>\n", cpt);
+	temp = ft_strnew(ft_atoi(&str[1]) + cpt);
+	debut = ft_strnew(cpt);
 	if (ft_strchr("scdDioOuUxX", type))
 	{
 		while (cpt > 0)
@@ -188,8 +188,8 @@ char *flag_neg(char *str, char type, char *val)
 			debut[cpt - 1] = ' ';
 			cpt--;
 		}
-	//	printf("{%s}\n", str);
-		return (ft_strcat(val, debut));
+		temp = ft_strcpy(temp, val);
+		return (ft_strcat(temp, debut));
 	}
 	return (0);
 }
@@ -428,7 +428,7 @@ int		option(const char *str, va_list arg, ...)
 				i = j;
 				while (*flag != 0)
 				{
-//					flag = range_option(flag);
+					flag = range_option(flag);
 					if (flag[0] == '#')
 						val = flag_dies(type, val);
 					if (flag[0] == '0')
@@ -443,11 +443,8 @@ int		option(const char *str, va_list arg, ...)
 					}
 					if (flag[0] == '-')
 					{
-		//				printf("<%s><%s>\n", val, flag);
 						val = flag_neg(flag, type, val);
-		//				printf("<%s><%s>\n", val, flag);
 						flag = strdup(&flag[1]);
-		//				printf("<%s><%s>\n", val, flag);
 					}
 					if ((flag[0] >= '1' && flag[0] <= '9'))
 						val = flag_esp(flag, type, val);
@@ -459,7 +456,7 @@ int		option(const char *str, va_list arg, ...)
 					}
 					if (ft_strchr("idpsxouX", flag[0]))
 						ft_putstr(val);
-		//			printf("<%s>\n", flag);
+			//		printf("<%s>\n", flag);
 					if (flag[0] >= '1' && flag[0] <= '9')
 						flag = strdup(&flag[nblen(ft_atoi(flag))]);
 					else
@@ -487,7 +484,9 @@ int	main()
 {
 	int a;
 
-	printf("%d\n",printf("je  suis %10s j'ai |%-17i| ans\n", "Mathieu", 30));
-	printf("%d\n",ft_printf("je  suis %10s j'ai |%-17i| ans\n", "Mathieu", 30));
+	a = 2;
+
+	printf("%d\n",printf("je  suis %s j'ai |%i| ans\n", "Mathieu", a + 28));
+	ft_printf("%d\n",ft_printf("je  suis %s j'ai |%i| ans\n", "Mathieu", a + 28));
 	return 0;	
 }
