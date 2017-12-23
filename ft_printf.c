@@ -10,18 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft/libft.h"
-#include <stdio.h>
-#include <stdarg.h>
-#include <locale.h>
+#include "ft_printf.h"
 
-static int	get_length(int n, int base)
+int	get_length(long int n, int base)
 {
 	int		len;
 
 	len = 0;
 	if (n < 0)
-		len++;
+		if (base == 16)
+			return (8);
+	if (base == 8)
+		return (11);
 	while (n != 0)
 	{
 		len++;
@@ -37,8 +37,12 @@ char		*ft_itoabase(long int n, int base)
 	int	i;
 	char	*str;
 	char	*strbase;
+	char	*strbasen;
 
 	strbase = "0123456789abcdef";
+	strbasen = "fedcba9876543210";
+	if (base == 8)
+		strbasen = "76543210";
 	i = 0;
 	if (!(str = ft_strnew(get_length(n, base))))
 		return (0);
@@ -48,14 +52,23 @@ char		*ft_itoabase(long int n, int base)
 		return (str);
 	}
 	if (n < 0)
+	{
 		n = -n;
+		str[i++] = strbasen[(n % base) - 1];
+		n /= base;
+		while (i < 8)
+		{
+			str[i++] = strbasen[(n % base)];
+			n /= base;
+		}
+		str[i] = '\0';
+		return (ft_strrev(str));
+	}
 	while (n != 0)
 	{
 		str[i++] = strbase[(n % base)];
 		n /= base;
 	}
-	if (n < 0)
-		str[i++] = '-';
 	str[i] = '\0';
 	return (ft_strrev(str));
 }
@@ -74,15 +87,15 @@ char	*mag(char *str)
 	return (str);
 }
 
-int		nblen(int nb)
+long		nblen(long nb)
 {
-	int i;
+	long i;
 
 	i = 0;
 	while (nb > 0)
 	{
 		nb = nb / 10;
-		i++;	
+		i++;
 	}
 	return (i);
 }
@@ -92,6 +105,14 @@ char *conv_octal(va_list arg, ...)
 	int	o;
 
 	o = va_arg(arg, int);
+	return ((ft_itoabase(o, 8)));
+}
+
+char *conv_long_octal(va_list arg, ...)
+{
+	long	o;
+
+	o = va_arg(arg, long);
 	return ((ft_itoabase(o, 8)));
 }
 
@@ -123,11 +144,35 @@ char *conv_nbr(va_list arg, ...)
 	return ((ft_itoa(nb)));
 }
 
+char *conv_long(va_list arg, ...)
+{
+	long	nb;
+
+	nb = va_arg(arg, long);
+	return ((ft_itoa(nb)));
+}
+
+/*char *conv_short(va_list arg, ...)
+  {
+  short	nb;
+
+  nb = va_arg(arg, short);
+  return ((ft_itoa(nb)));
+  }
+ */
 char *conv_u_int(va_list arg, ...)
 {
 	unsigned int	nb;
 
 	nb = va_arg(arg, unsigned int);
+	return ((ft_itoabase(nb, 10)));
+}
+
+char *conv_u_long(va_list arg, ...)
+{
+	unsigned long	nb;
+
+	nb = va_arg(arg, unsigned long);
 	return ((ft_itoabase(nb, 10)));
 }
 
@@ -159,16 +204,22 @@ char *type_param(char str, va_list arg, ...)
 		return (conv_nbr(arg));
 	if (str == 'u')
 		return (conv_u_int(arg));
+	if (str == 'U')
+		return (conv_u_long(arg));
 	if (str == 'o')
 		return (conv_octal(arg));
+	if (str == 'O')
+		return (conv_long_octal(arg));
 	if (str == 'x')
 		return (conv_exa(arg));
 	if (str == 'p')
 		return (conv_adresse(arg));
 	if (str == 'X')
 		return (mag(conv_exa(arg)));
+	if (str == 'D')
+		return (conv_long(arg));
 	if (str == '%')
-		return (0);
+		return ("%");
 	return (0);
 }
 
@@ -184,7 +235,7 @@ void flagC(wchar_t value)
 	unsigned int mask3= 4034953344;
 
 	unsigned int v = value;
-	int size = ft_strlen((ft_itoabase((unsigned int) value, 2)));
+	long size = ft_strlen((ft_itoabase((unsigned int) value, 2)));
 	unsigned char octet;
 
 	if (size <= 7)
@@ -239,6 +290,8 @@ char *flag_neg(char *str, char type, char *val)
 	char *debut;
 	char *temp;
 
+	if (ft_atoi(&str[1]) < ft_strlen(val))
+		return (val);
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	temp = ft_strnew(ft_atoi(&str[1]) + cpt);
 	debut = ft_strnew(cpt);
@@ -259,9 +312,10 @@ char *flag_esp(char *str, char type, char *val)
 {
 	size_t cpt;
 	char *debut;
-	char temp;
 
 	debut = ft_strnew(ft_atoi(str));
+	if (ft_atoi(str) < ft_strlen(val))
+		return (val);
 	cpt = ft_atoi(str) - ft_strlen(val);
 	if (ft_strchr("scdDioOuUxX", type))
 	{
@@ -280,7 +334,7 @@ char *flag_pos(char type, char *str)
 	char *debut;
 
 	debut = ft_strnew(ft_strlen(str) + 1);
-	if (ft_strchr("id", type))
+	if (ft_strchr("idD", type))
 	{
 		if (str[0] != '-')
 		{
@@ -296,7 +350,7 @@ char *flag_dies(char type, char *str)
 
 	if (ft_atoi(str) == 0)
 		return("0");
-	if (type == 'o')
+	if (type == 'o' || type == 'O')
 	{
 		debut = ft_strnew(ft_strlen(str) + 1);
 		return (ft_strcat(ft_strcat(debut, "0"), str));
@@ -322,8 +376,14 @@ char *flag_pres(const char *str, char type, char *val)
 
 	debut = ft_strnew(ft_atoi(&str[1]));
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
-	if (ft_strchr("dDioOuUxX", type))
+	if (val[0] == '-')
+		cpt++;
+	if (ft_strchr("dDioOuUx", type))
 	{
+		if (ft_atoi(&str[1]) < ft_strlen(val))
+			return (val);
+		if (ft_atoi(&str[1]) == 0)
+			return (0);
 		while (cpt > 0)
 		{
 			debut[cpt - 1] = '0';
@@ -333,7 +393,7 @@ char *flag_pres(const char *str, char type, char *val)
 		{
 			temp = val[1];
 			val[1] = debut[1];
-			debut[1] = temp;	
+			debut[1] = temp;
 		}
 		if (val[0] == '-')
 		{
@@ -344,7 +404,12 @@ char *flag_pres(const char *str, char type, char *val)
 
 		return (ft_strcat(debut, val));
 	}
-	return (0);
+	if (ft_strchr("s", type))
+	{
+		if (ft_atoi(&str[1]) < ft_strlen(val))
+			return (ft_strndup(val, ft_atoi(&str[1])));
+	}
+	return (val);
 }
 char *flag_0(const char *str, char type, char *val)
 {
@@ -352,6 +417,8 @@ char *flag_0(const char *str, char type, char *val)
 	char *debut;
 	char temp;
 
+	if (ft_atoi(str) < ft_strlen(val))
+		return (val);
 	debut = ft_strnew(ft_atoi(str));
 	cpt = ft_atoi(str) - ft_strlen(val);
 	if (ft_strchr("dDioOuUxX", type))
@@ -365,7 +432,7 @@ char *flag_0(const char *str, char type, char *val)
 		{
 			temp = val[1];
 			val[1] = debut[1];
-			debut[1] = temp;	
+			debut[1] = temp;
 		}
 		if (val[0] == '-')
 		{
@@ -411,42 +478,45 @@ char *range_option(char *flag)
 {
 	int i;
 	int j;
+	char *temp;
 
+	temp = ft_strnew(10);
 	i = 0;
 	j = 1;
 	while (flag[i])
 	{
 		if (flag[i] == '#')
-			return (swapton(flag, i, 0));
+		{
+			swapton(flag, i, 0);
+			return ("#");
+		}
 		i++;
 	}
 	i = 0;
 	while (flag[i])
 	{
 		if (flag[i] == '+')
-			return (swapton(flag, i, 0));
+		{
+			swapton(flag, i, 0);
+			return ("+");
+		}
 		i++;
 	}
 	i = 0;
 	while (flag[i])
 	{
-		if (flag[i] == ' ')
-			return (swapton(flag,i, 0));
-		i++;
-	}
-	i = 0;
-	while (flag[i])
-	{
-		if (flag[i] == '.')
+		if (flag[i] == '0' && (flag[i - 1] < '0' || flag[i - 1] > '9'))
 		{
 			flag = swapton(flag, i, 0);
+			temp[j - 1] = '0';
 			i++;
-			while (flag[i] >= '1' && flag[i] <= '9')
+			while (flag[i] >= '0' && flag[i] <= '9')
 			{
+				temp[j] = flag[i];
 				flag = swapton(flag, i, j);
 				j++;
 				i++;
-			} 
+			}
 			while (flag[i])
 			{
 				if (flag[i] == '0')
@@ -455,8 +525,34 @@ char *range_option(char *flag)
 				}
 				i++;
 			}
-			printf("<%s>\n", flag);
-			return (flag);
+			return (temp);
+		}
+		i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == '.')
+		{
+			flag = swapton(flag, i, 0);
+			temp[j - 1] = '.';
+			i++;
+			while (flag[i] >= '0' && flag[i] <= '9')
+			{
+				temp[j] = flag[i];
+				flag = swapton(flag, i, j);
+				j++;
+				i++;
+			}
+			while (flag[i])
+			{
+				if (flag[i] == '0')
+				{
+					flag = ft_strcat(strndup(flag, i), &flag[i]);
+				}
+				i++;
+			}
+			return (temp);
 		}
 		i++;
 	}
@@ -464,16 +560,68 @@ char *range_option(char *flag)
 	while (flag[i])
 	{
 		if (flag[i] == '-')
-			return (swapton(flag, i, 0));
+		{
+			flag = swapton(flag, i, 0);
+			temp[j - 1] = '-';
+			i++;
+			while (flag[i] >= '0' && flag[i] <= '9')
+			{
+				temp[j] = flag[i];
+				flag = swapton(flag, i, j);
+				j++;
+				i++;
+			}
+			while (flag[i])
+			{
+				if (flag[i] == '0')
+				{
+					flag = ft_strcat(strndup(flag, i), &flag[i]);
+				}
+				i++;
+			}
+			return (temp);
+		}
 		i++;
 	}
 	i = 0;
 	while (flag[i])
 	{
-		if (flag[i] == '0' && (flag[i - 1] < '1' && flag[i - 1] > '9'))
-			return (swapton(flag, i, 0));
+		if (flag[i] == ' ')
+		{
+			swapton(flag, i, 0);
+			return (" ");
+		}
 		i++;
 	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] >= '1' && flag[i] <= '9')
+		{
+			flag = swapton(flag, i, 0);
+			//temp[j - 1] = '0';
+			// i++;
+			while (flag[i] >= '0' && flag[i] <= '9')
+			{
+				temp[j - 1] = flag[i];
+				i++;
+				flag = swapton(flag, i, j);
+				j++;
+				//i++;
+			}
+			while (flag[i])
+			{
+				if (flag[i] == '0')
+				{
+					flag = ft_strcat(strndup(flag, i), &flag[i]);
+				}
+				i++;
+			}
+			return (temp);
+		}
+		i++;
+	}
+
 	return (flag);
 }
 
@@ -498,68 +646,151 @@ void	convparaminS(va_list arg, ...)
 		i++;
 	}
 }
-char *recupflag(const char *str, char *type, int i)
+
+int lenflag(const char *str, char *type, int i)
 {
 	int j;
-	char *flag;
 
 	j = i;
-	while (str[j] != 'X' && str[j] != 'c' && str[j] != 's' && str[j] != 'i' && str[j] != 'd' && str[j] != 'p' && str[j] != 'x' && str[j] != 'o' && str[j] != 'u' && str[j] != '\0')
+	while (str[j] != 'X' && str[j] != 'c' && str[j] != 'u' && str[j] != 'U' && str[j] != 's' && str[j] != 'i' && str[j] != 'd' && str[j] != 'p' && str[j] != 'x' && str[j] != 'O' && str[j] != 'o' && str[j] != 'D' && str[j] != '\0')
 	{
 		j++;
 	}
 	*type = str[j];
 	j++;
-	return (ft_strndup(&str[i], j - i));
+	return ((int)ft_strlen(ft_strndup(&str[i], j - i)));
+}
+
+char *recupflag(const char *str, char *type, int i)
+{
+	int j;
+	int k;
+	char *temp;
+	int multi;
+
+	multi = 0;
+	j = i;
+	while (str[j] != 'X' && str[j] != 'c' && str[j] != 'u' && str[j] != 'U' && str[j] != 's' && str[j] != 'i' && str[j] != 'd' && str[j] != 'p' && str[j] != 'x' && str[j] != 'O' && str[j] != 'o' && str[j] != 'D' && str[j] != '\0')
+	{
+		j++;
+	}
+	*type = str[j];
+	j++;
+	temp = ft_strndup(&str[i], j - i);
+	j = 0;
+	while (temp[j])
+	{
+		k = 1;
+		while (temp[k])
+		{
+			if ((temp[j] == ' ') && (temp[k] == ' ' || temp[k] == '+'))
+			{
+				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+				//j--;
+				k--;
+			}
+			else if ((temp[j] == '+') && (temp[k] == ' ' || temp[k] == '+'))
+			{
+				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
+				//j--;
+				k--;
+			}
+			multi = 1;
+			k++;
+		}
+		j++;
+	}
+	multi = 0;
+	j = 0;
+	while (temp[j])
+	{
+		if (temp[j] == '.')
+		{
+			if (multi == 1)
+			{
+				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+				j--;
+			}
+			multi = 1;
+		}
+		j++;
+
+	}
+
+	multi = 0;
+	j = 0;
+	while (temp[j])
+	{
+		if (temp[j] == '-' || (temp[j] == '0' && (temp[j - 1] < '0' || temp[j - 1] > '9') && multi == 1))
+		{
+			if (multi == 1)
+				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+			multi = 1;
+		}
+		j++;
+
+	}
+	return (temp);
 
 }
 
 int	do_flag(char *flag, char type, char *val)
 {
-				while (*flag != 0)
-				{
-					//				printf("<%s>\n", flag);
-					flag = range_option(flag);
-					if (flag[0] == '#')
-						val = flag_dies(type, val);
-					if (flag[0] == '0')
-					{
-						val = flag_0(flag, type, val);
-						flag = strdup(&flag[1]);
-					}
-					if (flag[0] == '.')
-					{
-						if ((flag[1] >= '1' && flag[1] <= '9'))
-							val = flag_pres(flag, type, val);
-						flag = strdup(&flag[1]);
-					}
-					if (flag[0] == '-')
-					{
-						val = flag_neg(flag, type, val);
-						flag = strdup(&flag[1]);
-					}
-					if ((flag[0] >= '1' && flag[0] <= '9'))
-						val = flag_esp(flag, type, val);
-					if (flag[0] == '+')
-						val = flag_pos(type, val);
-					if (flag[0] == ' ')
-					{
-						val = flag_espifpos(type, val);
-					}
-					if (ft_strchr("cidpsxouX", flag[0]))
-						ft_putstr(val);
-					if (flag[0] >= '1' && flag[0] <= '9')
-						flag = strdup(&flag[nblen(ft_atoi(flag))]);
-					else
-						flag = strdup(&flag[1]);
-				}
-		return (ft_strlen(val));
+	char *todo;
+	if (flag == 0)
+		return (0);
+	while (*flag != 0)
+	{
+		//				printf("<%s>\n", flag);
+		todo = range_option(flag);
+		//  todo = strndup(flag, ft_atoi(flag));
+		if (todo[0] == '#')
+			val = flag_dies(type, val);
+		if (todo[0] == '0')
+		{
+			val = flag_0(flag, type, val);
+			//  flag = strdup(&flag[1]);
+		}
+		if ((todo[0] >= '1' && todo[0] <= '9'))
+			val = flag_esp(flag, type, val);
+		if (todo[0] == '.')
+		{
+			if ((todo[1] >= '1' && todo[1] <= '9'))
+				val = flag_pres(todo, type, val);
+			else
+				val = NULL;
+			//     flag = strdup(&flag[1]);
+		}
+		if (todo[0] == '-')
+		{
+			val = flag_neg(flag, type, val);
+			//flag = strdup(&flag[1]);
+		}
+		if (todo[0] == '+')
+			val = flag_pos(type, val);
+		if (todo[0] == ' ')
+		{
+			val = flag_espifpos(type, val);
+		}
+		if (ft_strchr("cidDpsxoOuUX", flag[0]))
+		{
+			ft_putstr(val);
+			return ((int)ft_strlen(val));
+		}
+		/*   if (todo[0] >= '1' && todo[0] <= '9')
+		     flag = strdup(&flag[nblen(ft_atoi(flag))]);
+		     else
+		     flag = strdup(&flag[1]);*/
+		flag = strdup(&flag[ft_strlen(todo) ]); // parfois il fait mettre "-1"
+	}
+	return ((int)ft_strlen(val));
 }
 
 int		option(const char *str, va_list arg, ...)
 {
 	int		i;
 	int		len;
+	int     len2;
 	char	*flag;
 	char	type;
 	char 	*val;
@@ -574,13 +805,14 @@ int		option(const char *str, va_list arg, ...)
 			i++;
 			if ((ft_strchr("csidDpxXoOuU0123456789-+.# hljz",str[i])))
 			{
+				len2 = lenflag(str, &type, i);
 				flag = recupflag(str, &type, i);
 				val = type_param(type, arg);
-				i = i + ft_strlen(flag);
-				len = len - ft_strlen(flag) - 1;
+				i = i + len2;
+				len = len - len2 - 1;
 				len = len + do_flag(flag, type, val);
 			}
-			if (str[i] == 'C' || str[i] == 'S')
+			else if (str[i] == 'C' || str[i] == 'S')
 			{
 				if (str[i] == 'S')
 					convparaminS(arg);
@@ -588,9 +820,20 @@ int		option(const char *str, va_list arg, ...)
 					convparaminC(arg);
 				i++;
 			}
+			if (str[i] == '%')
+			{
+				ft_putchar(str[i]);
+			}
+			while (str[i] == '%')
+			{
+				i++;
+			}
 		}
-		ft_putchar(str[i]);
-		i++;	
+		else
+		{
+			ft_putchar(str[i]);
+			i++;
+		}
 	}
 	return (i + len);
 }
@@ -604,14 +847,4 @@ int		ft_printf(const char *str, ...)
 	len = option(str, arg);
 	va_end(arg);
 	return (len);
-}
-int	main()
-{
-	int a;
-
-	a = 2;
-
-	printf("%d\n",printf("je  suis %s j'ai |%s| ans\n", "Mathieu", "⾷"));
-	ft_printf("%d\n",ft_printf("je  suis %s j'ai |%s| ans\n", "Mathieu", "⾷"));
-	return 0;	
 }
