@@ -6,12 +6,12 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2018/01/10 14:17:10 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/10 17:13:13 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
+#include <time.h>
 static int	get_length_uintmax(uintmax_t n, int base)
 {
 	int		len;
@@ -663,7 +663,6 @@ char *flag_esp(char *str, char type, char *val)
 	cpt = ft_atoi(str) - ft_strlen(val);
 	if (type == 'c' && val[0] == '^' && val[1] == '@')
 		cpt++;
-	//printf("%zu\n", cpt);
 	if (ft_strchr("pscdDioOuUxX%", type))
 	{
 		while (cpt > 0)
@@ -676,7 +675,7 @@ char *flag_esp(char *str, char type, char *val)
 		else
 			return (debut);
 	}
-	return (0);
+	return (val);
 }
 
 char *flag_pos(char type, char *str)
@@ -771,7 +770,7 @@ char *flag_0(const char *str, char type, char *val)
 	char *debut;
 	char temp;
 
-	if (ft_atoi(str) < ft_strlen(val))
+	if (ft_atoi(str) <= ft_strlen(val))
 		return (val);
 	debut = ft_strnew(ft_atoi(str));
 	cpt = ft_atoi(str) - ft_strlen(val);
@@ -795,6 +794,12 @@ char *flag_0(const char *str, char type, char *val)
 			debut[0] = temp;
 		}
 		if (val[0] == '+')
+		{
+			temp = val[0];
+			val[0] = debut[0];
+			debut[0] = temp;
+		}
+		if (val[0] == ' ')
 		{
 			temp = val[0];
 			val[0] = debut[0];
@@ -839,7 +844,7 @@ char *range_option(char *flag)
 	int j;
 	char *temp;
 
-	temp = ft_strnew(10);
+	temp = ft_strnew(1000);
 	i = 0;
 	j = 1;
 	while (flag[i])
@@ -885,6 +890,16 @@ char *range_option(char *flag)
 		{
 			swapton(flag, i, 0);
 			return ("+");
+		}
+		i++;
+	}
+	i = 0;
+	while (flag[i])
+	{
+		if (flag[i] == ' ')
+		{
+			swapton(flag, i, 0);
+			return (" ");
 		}
 		i++;
 	}
@@ -940,16 +955,6 @@ char *range_option(char *flag)
 				i++;
 			}
 			return (temp);
-		}
-		i++;
-	}
-	i = 0;
-	while (flag[i])
-	{
-		if (flag[i] == ' ')
-		{
-			swapton(flag, i, 0);
-			return (" ");
 		}
 		i++;
 	}
@@ -1125,6 +1130,8 @@ int	do_flag(char *flag, char type, char *val)
 	{
 		todo = range_option(flag);
 
+	//	printf("|%s|\n", todo);
+	//	printf("<%s>\n", flag);
 		if (todo[0] == '#')
 		{
 			val = flag_dies(type, val);
@@ -1144,8 +1151,10 @@ int	do_flag(char *flag, char type, char *val)
 				val = NULL;
 			if (type == 'p' && ft_strstr(val,"0x0") && !val[3])
 				val = "0x";
-			if (val == NULL && type == 'o' && dies == 1)
+			if (val == NULL && (type == 'o' || type =='O') && dies == 1)
 				val = "0";
+			if (ft_atoi(&todo[1]) == 0 && type == 's')
+				val = 0;
 		}
 		if (todo[0] == '-')
 		{
@@ -1158,6 +1167,7 @@ int	do_flag(char *flag, char type, char *val)
 		{
 			val = flag_espifpos(type, val);
 		}
+	//	printf("<%s>\n", val);
 		if (ft_strchr("cidDpsxoOuUX%", flag[0]))
 		{
 			if (val == NULL && ft_strchr("sScC", flag[0]))
@@ -1178,7 +1188,12 @@ int	do_flag(char *flag, char type, char *val)
 			flag = ft_strdup(&flag[ft_strlen(todo) - 1]);
 		}
 		else
+		{
+		//	printf("<%s>\n", val);
 			flag = ft_strdup(&flag[ft_strlen(todo)]);
+		//	printf("<%s>\n", val);
+		}
+	//	printf("<%s>\n", val);
 	}
 	return ((int)ft_strlen(val));
 }
