@@ -3,12 +3,11 @@
 # include <stdarg.h>
 # include <stdio.h>
 # include <wchar.h>
-# include <locale.h>
 # include <stdint.h>
 # include "libft/includes/libft.h"
 
-int	get_length(long int n, int base);
-char		*ft_itoabase(long int n, int base);
+int	get_length(long n, int base);
+char		*ft_itoabase(long n, int base);
 char	*mag(char *str);
 long		nblen(long nb);
 char *conv_octal(va_list arg, ...);
