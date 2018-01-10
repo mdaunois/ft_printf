@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2017/12/18 16:54:41 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/10 14:17:10 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -664,7 +664,7 @@ char *flag_esp(char *str, char type, char *val)
 	if (type == 'c' && val[0] == '^' && val[1] == '@')
 		cpt++;
 	//printf("%zu\n", cpt);
-	if (ft_strchr("scdDioOuUxX%", type))
+	if (ft_strchr("pscdDioOuUxX%", type))
 	{
 		while (cpt > 0)
 		{
@@ -702,6 +702,8 @@ char *flag_dies(char type, char *str)
 		return("0");
 	if (type == 'o' || type == 'O')
 	{
+		if (ft_atoi(str) == 0)
+			return ("0");
 		debut = ft_strnew(ft_strlen(str) + 1);
 		return (ft_strcat(ft_strcat(debut, "0"), str));
 	}
@@ -715,7 +717,7 @@ char *flag_dies(char type, char *str)
 		debut = ft_strnew(ft_strlen(str) + 2);
 		return (ft_strcat(ft_strcat(debut, "0X"), str));
 	}
-	return (0);
+	return (str);
 }
 
 char *flag_pres(const char *str, char type, char *val)
@@ -728,7 +730,9 @@ char *flag_pres(const char *str, char type, char *val)
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	if (val[0] == '-')
 		cpt++;
-	if (ft_strchr("dDioOuUxX%", type))
+	if (ft_strcmp(str, "0x") && type == 'p')
+		cpt = cpt + 2;
+	if (ft_strchr("pdDioOuUxX%", type))
 	{
 		if (ft_atoi(&str[1]) < ft_strlen(val))
 			return (val);
@@ -1112,6 +1116,9 @@ char *recupflag(const char *str, char *type, int i)
 int	do_flag(char *flag, char type, char *val)
 {
 	char *todo;
+	int dies;
+
+	dies = 0;
 	if (flag == 0)
 		return (0);
 	while (*flag != 0)
@@ -1119,11 +1126,13 @@ int	do_flag(char *flag, char type, char *val)
 		todo = range_option(flag);
 
 		if (todo[0] == '#')
+		{
 			val = flag_dies(type, val);
+			dies = 1;
+		}
 		if (todo[0] == '0')
 		{
 			val = flag_0(flag, type, val);
-
 		}
 		if ((todo[0] >= '1' && todo[0] <= '9'))
 			val = flag_esp(flag, type, val);
@@ -1132,10 +1141,11 @@ int	do_flag(char *flag, char type, char *val)
 			if ((todo[1] >= '1' && todo[1] <= '9'))
 				val = flag_pres(todo, type, val);
 			if (val[0] == '0' && !val[1])
-			{
 				val = NULL;
-
-			}
+			if (type == 'p' && ft_strstr(val,"0x0") && !val[3])
+				val = "0x";
+			if (val == NULL && type == 'o' && dies == 1)
+				val = "0";
 		}
 		if (todo[0] == '-')
 		{
@@ -1148,10 +1158,9 @@ int	do_flag(char *flag, char type, char *val)
 		{
 			val = flag_espifpos(type, val);
 		}
-	//	printf("<%s>\n", val);
 		if (ft_strchr("cidDpsxoOuUX%", flag[0]))
 		{
-			if (val == NULL && ft_strchr("csSC", flag[0]))
+			if (val == NULL && ft_strchr("sScC", flag[0]))
 			{
 				ft_putstr("(null)");
 				return (6);
@@ -1197,6 +1206,7 @@ int		option(const char *str, va_list arg, ...)
 			{
 				len2 = lenflag(str, &type, i);
 				flag = recupflag(str, &type, i);
+			//	printf("<%c>\n", type);
 			//	printf("<%s>\n", flag);
 				if (type == '%')
 					val = "%";
