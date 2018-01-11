@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2018/01/10 17:13:13 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/11 13:39:13 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -639,8 +639,8 @@ char *flag_neg(char *str, char type, char *val)
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	temp = ft_strnew(ft_atoi(&str[1]) + cpt);
 	debut = ft_strnew(cpt);
-	if (ft_strchr("scdDioOuUxX%", type))
-	{
+//	if (ft_strchr("scdDioOuUxX%Z", type))
+//	{
 		while (cpt > 0)
 		{
 			debut[cpt - 1] = ' ';
@@ -648,8 +648,8 @@ char *flag_neg(char *str, char type, char *val)
 		}
 		temp = ft_strcpy(temp, val);
 		return (ft_strcat(temp, debut));
-	}
-	return (0);
+//	}
+//	return (val);
 }
 
 char *flag_esp(char *str, char type, char *val)
@@ -731,7 +731,7 @@ char *flag_pres(const char *str, char type, char *val)
 		cpt++;
 	if (ft_strcmp(str, "0x") && type == 'p')
 		cpt = cpt + 2;
-	if (ft_strchr("pdDioOuUxX%", type))
+	if (ft_strchr("pdDioOuUxX", type))
 	{
 		if (ft_atoi(&str[1]) < ft_strlen(val))
 			return (val);
@@ -1017,10 +1017,11 @@ int lenflag(const char *str, char *type, int i)
 	int j;
 
 	j = i;
-	while (str[j] != '%' && str[j] != 'X' && str[j] != 'c' && str[j] != 'u' && str[j] != 'U' && str[j] != 's' && str[j] != 'i' && str[j] != 'd' && str[j] != 'p' && str[j] != 'x' && str[j] != 'O' && str[j] != 'o' && str[j] != 'D' && str[j] != '\0')
+	while (ft_strchr("0123456789-+.# hljz",str[j]))
 	{
 		j++;
 	}
+//	j++;
 	*type = str[j];
 	j++;
 	return ((int)ft_strlen(ft_strndup(&str[i], j - i)));
@@ -1036,10 +1037,11 @@ char *recupflag(const char *str, char *type, int i)
 
 	multi = 0;
 	j = i;
-	while (str[j] != 'X' && str[j] != 'c' && str[j] != 'u' && str[j] != 'U' && str[j] != 's' && str[j] != 'i' && str[j] != 'd' && str[j] != 'p' && str[j] != 'x' && str[j] != 'O' && str[j] != 'o' && str[j] != 'D' && str[j] != '%' && str[j] != '\0')
+	while (ft_strchr("0123456789-+.# hljz",str[j]))
 	{
 		j++;
 	}
+//	j++;
 	*type = str[j];
 	j++;
 	temp = ft_strndup(&str[i], j - i);
@@ -1130,8 +1132,7 @@ int	do_flag(char *flag, char type, char *val)
 	{
 		todo = range_option(flag);
 
-	//	printf("|%s|\n", todo);
-	//	printf("<%s>\n", flag);
+	//	printf("todo = |%s|\n", todo);
 		if (todo[0] == '#')
 		{
 			val = flag_dies(type, val);
@@ -1189,12 +1190,13 @@ int	do_flag(char *flag, char type, char *val)
 		}
 		else
 		{
-		//	printf("<%s>\n", val);
+	//		printf("val = <%s>\n", val);
 			flag = ft_strdup(&flag[ft_strlen(todo)]);
 		//	printf("<%s>\n", val);
 		}
 	//	printf("<%s>\n", val);
 	}
+	ft_putstr(val);
 	return ((int)ft_strlen(val));
 }
 
@@ -1208,7 +1210,10 @@ int		option(const char *str, va_list arg, ...)
 	char 	*val;
 
 	flag = NULL;
+	val = NULL;
+	type = 'Z';
 	len = 0;
+	len2 = 0;
 	i = 0;
 	while(str[i])
 	{
@@ -1221,24 +1226,28 @@ int		option(const char *str, va_list arg, ...)
 			{
 				len2 = lenflag(str, &type, i);
 				flag = recupflag(str, &type, i);
-			//	printf("<%c>\n", type);
-			//	printf("<%s>\n", flag);
 				if (type == '%')
 					val = "%";
-				else if (ft_strstr(flag, "hh"))
-					val = type_param_char(type, arg);
-				else if (ft_strstr(flag, "ll"))
-					val = type_param_long_long(type, arg);
-				else if (ft_strchr(flag, 'h'))
-					val = type_param_short(type, arg);
-				else if (ft_strchr(flag, 'l'))
-					val = type_param_long(type, arg);
 				else if (ft_strchr(flag, 'j'))
 					val = type_param_intmax(type, arg);
 				else if (ft_strchr(flag, 'z'))
 					val = type_param_size_t(type, arg);
+				else if (ft_strstr(flag, "ll"))
+					val = type_param_long_long(type, arg);
+				else if (ft_strchr(flag, 'l'))
+					val = type_param_long(type, arg);
+
+				else if (ft_strstr(flag, "hh"))
+					val = type_param_char(type, arg);
+				else if (ft_strchr(flag, 'h'))
+					val = type_param_short(type, arg);
 				else
 					val = type_param(type, arg);
+				if (val == NULL && !ft_strchr("csidDpxXoOuU", type))
+				{
+					val = ft_strnew(1);
+					val[0] = type;
+				}
 				i = i + len2;
 				len = len - len2 - 1;
 				len = len + do_flag(flag, type, val);
