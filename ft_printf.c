@@ -765,8 +765,8 @@ char *flag_0(const char *str, char type, char *val)
 		return (val);
 	debut = ft_strnew(ft_atoi(str));
 	cpt = ft_atoi(str) - ft_strlen(val);
-	if (ft_strchr("dDioOuUxX%", type))
-	{
+//	if (ft_strchr("dDioOuUxX%", type))
+//	{
 		while (cpt > 0)
 		{
 			debut[cpt - 1] = '0';
@@ -797,8 +797,8 @@ char *flag_0(const char *str, char type, char *val)
 			debut[0] = temp;
 		}
 		return (ft_strcat(debut, val));
-	}
-	return (0);
+//	}
+	return (val);
 }
 char	*flag_espifpos(char type, char *str)
 {
@@ -1115,15 +1115,20 @@ int	do_flag(char *flag, char type, char *val)
 {
 	char *todo;
 	int dies;
+	int valc;
 
+	valc = -1;
 	dies = 0;
+//	printf("<%s>", flag);
 	if (flag == 0)
 		return (0);
+	if (type == 'c' && !ft_strcmp(val, ""))
+		valc = 0;
 	while (*flag != 0)
 	{
 		todo = range_option(flag);
 
-	//	printf("todo = |%s|\n", todo);
+//		printf("todo = |%s|\n", todo);
 		if (todo[0] == '#')
 		{
 			val = flag_dies(type, val);
@@ -1162,6 +1167,13 @@ int	do_flag(char *flag, char type, char *val)
 	//	printf("<%s>", val);
 		if (ft_strchr("cidDpsxoOuUX%", flag[0]))
 		{
+			if (valc == 0)
+			{
+				val[ft_strlen(val) - 1] = 0;
+				ft_putstr(val);
+				ft_putchar(0);
+				return ((int)ft_strlen(val) + 1);
+			}
 
 			if ((ft_strchr("cC", flag[0]) && val[0] == 0))
 			{
@@ -1193,7 +1205,8 @@ int	do_flag(char *flag, char type, char *val)
 		}
 	//	printf("<%s>\n", val);
 	}
-	ft_putstr(val);
+	if (type != 'C' && type != 'S')
+		ft_putstr(val);
 	return ((int)ft_strlen(val));
 }
 
@@ -1223,8 +1236,10 @@ int		option(const char *str, va_list arg, ...)
 			{
 				len2 = lenflag(str, &type, i);
 				flag = recupflag(str, &type, i);
-				if (type == '%')
-					val = "%";
+				if (type == 'S')
+					convparaminS(arg);
+				else if (type == 'C')
+					convparaminC(arg);
 				else if (ft_strchr(flag, 'j'))
 					val = type_param_intmax(type, arg);
 				else if (ft_strchr(flag, 'z'))
