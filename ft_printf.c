@@ -308,13 +308,13 @@ char *conv_char(va_list arg)
 	if (!(str = ft_strnew(1)))
 		return (0);
 	c = va_arg(arg, int);
-	if (c != 0)
-	{
+//	if (c != 0)
+//	{
 		str[0] = c;
 		return (str);
-	}
-	else
-		return ("^@");
+//	}
+//	else
+//		return ("^@");
 }
 
 char *conv_str(va_list arg)
@@ -639,17 +639,13 @@ char *flag_neg(char *str, char type, char *val)
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	temp = ft_strnew(ft_atoi(&str[1]) + cpt);
 	debut = ft_strnew(cpt);
-//	if (ft_strchr("scdDioOuUxX%Z", type))
-//	{
-		while (cpt > 0)
-		{
-			debut[cpt - 1] = ' ';
-			cpt--;
-		}
-		temp = ft_strcpy(temp, val);
-		return (ft_strcat(temp, debut));
-//	}
-//	return (val);
+	while (cpt > 0)
+	{
+		debut[cpt - 1] = ' ';
+		cpt--;
+	}
+	temp = ft_strcpy(temp, val);
+	return (ft_strcat(temp, debut));
 }
 
 char *flag_esp(char *str, char type, char *val)
@@ -661,20 +657,15 @@ char *flag_esp(char *str, char type, char *val)
 	if (ft_atoi(str) < ft_strlen(val))
 		return (val);
 	cpt = ft_atoi(str) - ft_strlen(val);
-	if (type == 'c' && val[0] == '^' && val[1] == '@')
-		cpt++;
-	if (ft_strchr("pscdDioOuUxX%", type))
+	while (cpt > 0)
 	{
-		while (cpt > 0)
-		{
-			debut[cpt - 1] = ' ';
-			cpt--;
-		}
-		if (val != NULL)
-			return (ft_strcat(debut, val));
-		else
-			return (debut);
+		debut[cpt - 1] = ' ';
+		cpt--;
 	}
+	if (val != NULL)
+		return (ft_strcat(debut, val));
+	else
+		return (debut);
 	return (val);
 }
 
@@ -1168,10 +1159,16 @@ int	do_flag(char *flag, char type, char *val)
 		{
 			val = flag_espifpos(type, val);
 		}
-	//	printf("<%s>\n", val);
+	//	printf("<%s>", val);
 		if (ft_strchr("cidDpsxoOuUX%", flag[0]))
 		{
-			if (val == NULL && ft_strchr("sScC", flag[0]))
+
+			if ((ft_strchr("cC", flag[0]) && val[0] == 0))
+			{
+				ft_putchar(0);
+				return (1);
+			}
+			else if (ft_strchr("sS", flag[0]) && val == NULL)
 			{
 				ft_putstr("(null)");
 				return (6);
@@ -1179,8 +1176,8 @@ int	do_flag(char *flag, char type, char *val)
 			else
 			{
 				ft_putstr(val);
-				if ((flag[0] == 'c') && ft_strstr(val, "^@"))
-					return  ((int)ft_strlen(val) - 1);
+	//			if ((flag[0] == 'c') && ft_strstr(val, "^@"))
+	//				return  ((int)ft_strlen(val) - 1);
 				return ((int)ft_strlen(val));
 			}
 		}
