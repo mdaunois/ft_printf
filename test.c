@@ -10,16 +10,16 @@ int     main()
 	short b;
 	size_t t = 42000000000;
 
-//	setlocale(LC_ALL, "");
+	setlocale(LC_ALL, "");
 	a = -1;
 	c = -2147483649;
 	b = 12345;
-	printf("%d\n", printf("eux|%010x|", 542));
-	ft_printf("%d\n", ft_printf("moi|%010x|", 542));
-//	printf("%d\n", printf("eux%4.15d\n", -42));
-//	ft_printf("%d\n", ft_printf("moi%4.15d\n", -42));
-//	printf("%C\n", L'我');
-//	ft_printf("%C\n", L'我');
+//	printf("%d\n", printf("eux|%010x|", 542));
+//	ft_printf("%d\n", ft_printf("moi|%010x|", 542));
+//	printf("%d\n", printf("eux%S\n", L"Á±≥"));
+//	printf("%d\n", ft_printf("moi%S\n", L"Á±≥"));
+	printf("%d\n", printf("eux%030S\n", L"我是一只猫。" ) - 4);
+	printf("%d\n", ft_printf("moi%030S\n", L"我是一只猫。" ) - 4);
 //	ft_putchar(0);
 	//printf("%d\n", printf("eux%-15Z"));
 	//ft_printf("%d\n", ft_printf("moi%-15Z"));

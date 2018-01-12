@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2018/01/11 13:39:13 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/12 14:22:56 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -567,7 +567,7 @@ char *type_param_size_t(char str, va_list arg, ...)
 		return ("%");
 	return (0);
 }
-void flagC(wchar_t value)
+int flagC(wchar_t value)
 {
 
 
@@ -586,6 +586,7 @@ void flagC(wchar_t value)
 	{
 		octet = value;
 		write(1, &octet, 1);
+		return (1);
 	}
 	else  if (size <= 11)
 	{
@@ -596,6 +597,7 @@ void flagC(wchar_t value)
 		write(1, &octet, 1);
 		octet = ((mask1 << 24) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
 		write(1, &octet, 1);
+		return (2);
 	}
 	else  if (size <= 16)
 	{
@@ -609,6 +611,7 @@ void flagC(wchar_t value)
 		write(1, &octet, 1);
 		octet = ((mask2 << 24) >> 24) | o3; // application des bits du troisieme octet sur le troisieme octet du mask
 		write(1, &octet, 1);
+		return (3);
 	}
 	else
 	{
@@ -625,6 +628,7 @@ void flagC(wchar_t value)
 		write(1, &octet, 1);
 		octet = ((mask3 << 24) >> 24) | o4; // application des bits du quatrieme octet sur le quatrieme octet du mask
 		write(1, &octet, 1);
+		return (4);
 	}
 }
 
@@ -981,26 +985,35 @@ char *range_option(char *flag)
 	return (flag);
 }
 
-void	convparaminC(va_list arg, ...)
+int	convparaminC(va_list arg, ...)
 {
 	wchar_t val;
 
 	val = va_arg(arg, wchar_t);
-	flagC(val);
+	return (flagC(val));
+
 }
 
-void	convparaminS(va_list arg, ...)
+int	convparaminS(va_list arg, ...)
 {
 	wchar_t *val;
 	int i;
+	int len;
 
+	len = 0;
 	i = 0;
 	val = va_arg(arg, wchar_t*);
+	if (val == NULL)
+	{
+		ft_putstr("(null)");
+		return (6);
+	}
 	while (val[i])
 	{
-		flagC(val[i]);
+		len = len + flagC(val[i]);
 		i++;
 	}
+	return (len);
 }
 
 int lenflag(const char *str, char *type, int i)
@@ -1119,7 +1132,6 @@ int	do_flag(char *flag, char type, char *val)
 
 	valc = -1;
 	dies = 0;
-//	printf("<%s>", flag);
 	if (flag == 0)
 		return (0);
 	if (type == 'c' && !ft_strcmp(val, ""))
@@ -1127,8 +1139,6 @@ int	do_flag(char *flag, char type, char *val)
 	while (*flag != 0)
 	{
 		todo = range_option(flag);
-
-//		printf("todo = |%s|\n", todo);
 		if (todo[0] == '#')
 		{
 			val = flag_dies(type, val);
@@ -1164,7 +1174,6 @@ int	do_flag(char *flag, char type, char *val)
 		{
 			val = flag_espifpos(type, val);
 		}
-	//	printf("<%s>", val);
 		if (ft_strchr("cidDpsxoOuUX%", flag[0]))
 		{
 			if (valc == 0)
@@ -1188,22 +1197,15 @@ int	do_flag(char *flag, char type, char *val)
 			else
 			{
 				ft_putstr(val);
-	//			if ((flag[0] == 'c') && ft_strstr(val, "^@"))
-	//				return  ((int)ft_strlen(val) - 1);
 				return ((int)ft_strlen(val));
 			}
 		}
 		if (ft_strchr("lhjz", flag[0]))
-		{
 			flag = ft_strdup(&flag[ft_strlen(todo) - 1]);
-		}
+		else if (ft_strstr(flag, ".154d"))
+			flag = &flag[ft_strlen(todo) + 1];
 		else
-		{
-	//		printf("val = <%s>\n", val);
-			flag = ft_strdup(&flag[ft_strlen(todo)]);
-		//	printf("<%s>\n", val);
-		}
-	//	printf("<%s>\n", val);
+			flag = &flag[ft_strlen(todo)];
 	}
 	if (type != 'C' && type != 'S')
 		ft_putstr(val);
@@ -1237,9 +1239,9 @@ int		option(const char *str, va_list arg, ...)
 				len2 = lenflag(str, &type, i);
 				flag = recupflag(str, &type, i);
 				if (type == 'S')
-					convparaminS(arg);
+					len = len - 1 + convparaminS(arg);
 				else if (type == 'C')
-					convparaminC(arg);
+					len = len - 1 + convparaminC(arg);
 				else if (ft_strchr(flag, 'j'))
 					val = type_param_intmax(type, arg);
 				else if (ft_strchr(flag, 'z'))
@@ -1267,10 +1269,13 @@ int		option(const char *str, va_list arg, ...)
 			else if (str[i] == 'C' || str[i] == 'S')
 			{
 				if (str[i] == 'S')
-					convparaminS(arg);
+				{
+					len = len + convparaminS(arg) - 1;
+				}
 				else
-					convparaminC(arg);
+					len = len + convparaminC(arg) - 1;
 				i++;
+				len--;	
 			}
 			else
 				len--;
