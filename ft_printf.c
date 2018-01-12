@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2018/01/12 14:22:56 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/12 16:39:13 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -462,10 +462,18 @@ char *type_param_long(char str, va_list arg, ...)
 		return (mag(conv_exa_long(arg)));
 	if (str == 'o')
 		return (conv_long_octal(arg));
+	if (str == 'O')
+		return (conv_long_octal(arg));
 	if (str == 'u')
+		return (conv_u_long(arg));
+	if (str == 'U')
 		return (conv_u_long(arg));
 	if (str == 'p')
 		return (conv_adresse(arg));
+	if (str == 's')
+		return (convparaminS(arg));
+	if (str == 'c')
+		return (convparaminC(arg));
 	if (str == '%')
 		return ("%");
 	return (0);
@@ -567,7 +575,7 @@ char *type_param_size_t(char str, va_list arg, ...)
 		return ("%");
 	return (0);
 }
-int flagC(wchar_t value)
+char *flagC(wchar_t value)
 {
 
 
@@ -580,55 +588,59 @@ int flagC(wchar_t value)
 
 	unsigned int v = value;
 	long size = ft_strlen((ft_itoabase((unsigned int) value, 2)));
-	unsigned char octet;
+	unsigned char *octet;
 
 	if (size <= 7)
 	{
-		octet = value;
-		write(1, &octet, 1);
-		return (1);
+		octet = ft_strnew(1);
+		octet[0] = value;
+		//write(1, &octet, 1);
+		return (octet);
 	}
 	else  if (size <= 11)
 	{
+		octet = ft_strnew(2);
 		unsigned char o2 = (v << 26) >> 26; // recuperation des 6 premiers bits 110xxxxx 10(xxxxxx)
 		unsigned char o1 = ((v >> 6) << 27) >> 27; // recuperation des 5 derniers bits 110(xxxxx) 10xxxxxx
 
-		octet = (mask1 >> 8) | o1; // application des bits du premier octet sur le premier octet mask
-		write(1, &octet, 1);
-		octet = ((mask1 << 24) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
-		write(1, &octet, 1);
-		return (2);
+		octet[0] = (mask1 >> 8) | o1; // application des bits du premier octet sur le premier octet mask
+//		write(1, &octet, 1);
+		octet[1] = ((mask1 << 24) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
+//		write(1, &octet, 1);
+		return (octet);
 	}
 	else  if (size <= 16)
 	{
+		octet = ft_strnew(3);
 		unsigned char o3 = (v << 26) >> 26; // recuperation des 6 premiers bits 1110xxxx 10xxxxxx 10(xxxxxx)
 		unsigned char o2 = ((v >> 6) << 26) >> 26; // recuperation des 6 seconds bits 1110xxxx 10(xxxxxx) 10xxxxxx
 		unsigned char o1 = ((v >> 12) << 28) >> 28; // recuperation des 4 derniers bits 1110(xxxx) 10xxxxxx 10xxxxxx
 
-		octet = (mask2 >> 16) | o1; // application des bits du premier octet sur le premier octet mask
-		write(1, &octet, 1);
-		octet = ((mask2 << 16) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
-		write(1, &octet, 1);
-		octet = ((mask2 << 24) >> 24) | o3; // application des bits du troisieme octet sur le troisieme octet du mask
-		write(1, &octet, 1);
-		return (3);
+		octet[0] = (mask2 >> 16) | o1; // application des bits du premier octet sur le premier octet mask
+//		write(1, &octet, 1);
+		octet[1] = ((mask2 << 16) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
+//		write(1, &octet, 1);
+		octet[2] = ((mask2 << 24) >> 24) | o3; // application des bits du troisieme octet sur le troisieme octet du mask
+//		write(1, &octet, 1);
+		return (octet);
 	}
 	else
 	{
+		octet = ft_strnew(4);
 		unsigned char o4 = (v << 26) >> 26; // recuperation des 6 premiers bits 11110xxx 10xxxxxx 10xxxxxx 10(xxxxxx)
 		unsigned char o3 = ((v >> 6) << 26) >> 26; // recuperation des 6 seconds bits 11110xxx 10xxxxxx 10(xxxxxx) 10xxxxxx
 		unsigned char o2 = ((v >> 12) << 26) >> 26;  // recuperation des 6 seconds bits 11110xxx 10(xxxxxx) 10xxxxxx 10xxxxxx
 		unsigned char o1 = ((v >> 18) << 29) >> 29; // recuperation des 3 seconds bits 11110(xxx) 10xxxxxx 10xxxxxx 10xxxxxx
 
-		octet = (mask3 >> 24) | o1; // application des bits du premier octet sur le premier octet mask
-		write(1, &octet, 1);
-		octet = ((mask3 << 8) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
-		write(1, &octet, 1);
-		octet = ((mask3 << 16) >> 24) | o3; // application des bits du troisieme octet sur le troisieme octet du mask
-		write(1, &octet, 1);
-		octet = ((mask3 << 24) >> 24) | o4; // application des bits du quatrieme octet sur le quatrieme octet du mask
-		write(1, &octet, 1);
-		return (4);
+		octet[0] = (mask3 >> 24) | o1; // application des bits du premier octet sur le premier octet mask
+//		write(1, &octet, 1);
+		octet[1] = ((mask3 << 8) >> 24) | o2; // application des bits du seond octet sur le second octet du mask
+//		write(1, &octet, 1);
+		octet[2] = ((mask3 << 16) >> 24) | o3; // application des bits du troisieme octet sur le troisieme octet du mask
+//		write(1, &octet, 1);
+		octet[3] = ((mask3 << 24) >> 24) | o4; // application des bits du quatrieme octet sur le quatrieme octet du mask
+//		write(1, &octet, 1);
+		return (octet);
 	}
 }
 
@@ -724,7 +736,7 @@ char *flag_pres(const char *str, char type, char *val)
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	if (val[0] == '-')
 		cpt++;
-	if (ft_strcmp(str, "0x") && type == 'p')
+	if ((type == 'x' || type == 'X' || type == 'p') && (val[1] == 'x' || val [1] == 'X'))
 		cpt = cpt + 2;
 	if (ft_strchr("pdDioOuUxX", type))
 	{
@@ -752,7 +764,7 @@ char *flag_pres(const char *str, char type, char *val)
 
 		return (ft_strcat(debut, val));
 	}
-	if (ft_strchr("s", type))
+	if (ft_strchr("sS", type))
 	{
 		if (ft_atoi(&str[1]) < ft_strlen(val))
 			return (ft_strndup(val, ft_atoi(&str[1])));
@@ -776,6 +788,7 @@ char *flag_0(const char *str, char type, char *val)
 			debut[cpt - 1] = '0';
 			cpt--;
 		}
+//	printf("\tTOTO\n");
 		if (val[1] == 'x' || val[1] == 'X')
 		{
 			temp = val[1];
@@ -800,6 +813,9 @@ char *flag_0(const char *str, char type, char *val)
 			val[0] = debut[0];
 			debut[0] = temp;
 		}
+	//	if (val == NULL)
+	//		return (debut);
+//	printf("\tTOTO\n");
 		return (ft_strcat(debut, val));
 //	}
 	return (val);
@@ -985,7 +1001,7 @@ char *range_option(char *flag)
 	return (flag);
 }
 
-int	convparaminC(va_list arg, ...)
+char	*convparaminC(va_list arg, ...)
 {
 	wchar_t val;
 
@@ -994,26 +1010,23 @@ int	convparaminC(va_list arg, ...)
 
 }
 
-int	convparaminS(va_list arg, ...)
+char	*convparaminS(va_list arg, ...)
 {
 	wchar_t *val;
 	int i;
-	int len;
+	char *temp;
 
-	len = 0;
+	temp = ft_strnew(1000);
 	i = 0;
 	val = va_arg(arg, wchar_t*);
 	if (val == NULL)
-	{
-		ft_putstr("(null)");
-		return (6);
-	}
+		return (NULL);
 	while (val[i])
 	{
-		len = len + flagC(val[i]);
+		temp =  ft_strcat(temp, flagC(val[i]));
 		i++;
 	}
-	return (len);
+	return (temp);
 }
 
 int lenflag(const char *str, char *type, int i)
@@ -1100,7 +1113,7 @@ char *recupflag(const char *str, char *type, int i)
 		{
 			if (j == k)
 				k++;
-			if ((temp[j] == '.') && (temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
+			if ((ft_strchr("idDoOuUxX", *type)) && (temp[j] == '.') && (temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
 			{
 				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
 				k--;
@@ -1139,6 +1152,7 @@ int	do_flag(char *flag, char type, char *val)
 	while (*flag != 0)
 	{
 		todo = range_option(flag);
+	//	printf("\t%s\n", todo);
 		if (todo[0] == '#')
 		{
 			val = flag_dies(type, val);
@@ -1160,8 +1174,8 @@ int	do_flag(char *flag, char type, char *val)
 				val = "0x";
 			if (val == NULL && (type == 'o' || type =='O') && dies == 1)
 				val = "0";
-			if (ft_atoi(&todo[1]) == 0 && type == 's')
-				val = 0;
+			if (ft_atoi(&todo[1]) == 0 && (type == 's'|| type == 'S'))
+				val = "";
 		}
 		if (todo[0] == '-')
 		{
@@ -1174,7 +1188,7 @@ int	do_flag(char *flag, char type, char *val)
 		{
 			val = flag_espifpos(type, val);
 		}
-		if (ft_strchr("cidDpsxoOuUX%", flag[0]))
+		if (ft_strchr("SCcidDpsxoOuUX%", flag[0]))
 		{
 			if (valc == 0)
 			{
@@ -1207,7 +1221,7 @@ int	do_flag(char *flag, char type, char *val)
 		else
 			flag = &flag[ft_strlen(todo)];
 	}
-	if (type != 'C' && type != 'S')
+	//if (type != 'C' && type != 'S')
 		ft_putstr(val);
 	return ((int)ft_strlen(val));
 }
@@ -1234,14 +1248,14 @@ int		option(const char *str, va_list arg, ...)
 			i++;
 			if (!str[i])
 				return (len + i - 1);
-			else if ((ft_strchr("%csidDpxXoOuU0123456789-+.# hljz",str[i])))
+			else if ((ft_strchr("%SCcsidDpxXoOuU0123456789-+.# hljz",str[i])))
 			{
 				len2 = lenflag(str, &type, i);
 				flag = recupflag(str, &type, i);
 				if (type == 'S')
-					len = len - 1 + convparaminS(arg);
+					val =  convparaminS(arg);
 				else if (type == 'C')
-					len = len - 1 + convparaminC(arg);
+					val = convparaminC(arg);
 				else if (ft_strchr(flag, 'j'))
 					val = type_param_intmax(type, arg);
 				else if (ft_strchr(flag, 'z'))
@@ -1250,33 +1264,35 @@ int		option(const char *str, va_list arg, ...)
 					val = type_param_long_long(type, arg);
 				else if (ft_strchr(flag, 'l'))
 					val = type_param_long(type, arg);
-
 				else if (ft_strstr(flag, "hh"))
 					val = type_param_char(type, arg);
 				else if (ft_strchr(flag, 'h'))
 					val = type_param_short(type, arg);
 				else
 					val = type_param(type, arg);
-				if (val == NULL && !ft_strchr("csidDpxXoOuU", type))
+				if (val == NULL && !ft_strchr("CScsidDpxXoOuU", type))
 				{
 					val = ft_strnew(1);
 					val[0] = type;
 				}
+//				ft_putstr("<<");
+//				ft_putstr(val);
+//				ft_putstr(">>");
 				i = i + len2;
 				len = len - len2 - 1;
 				len = len + do_flag(flag, type, val);
 			}
-			else if (str[i] == 'C' || str[i] == 'S')
+			/*else if (str[i] == 'C' || str[i] == 'S')
 			{
 				if (str[i] == 'S')
 				{
-					len = len + convparaminS(arg) - 1;
+				//	len = len + convparaminS(arg) - 1;
 				}
 				else
-					len = len + convparaminC(arg) - 1;
+				//	len = len + convparaminC(arg) - 1;
 				i++;
 				len--;	
-			}
+			}*/
 			else
 				len--;
 		}

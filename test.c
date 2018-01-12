@@ -16,14 +16,14 @@ int     main()
 	b = 12345;
 //	printf("%d\n", printf("eux|%010x|", 542));
 //	ft_printf("%d\n", ft_printf("moi|%010x|", 542));
-//	printf("%d\n", printf("eux%S\n", L"Á±≥"));
-//	printf("%d\n", ft_printf("moi%S\n", L"Á±≥"));
-	printf("%d\n", printf("eux%030S\n", L"我是一只猫。" ) - 4);
-	printf("%d\n", ft_printf("moi%030S\n", L"我是一只猫。" ) - 4);
+	printf("%d\n", printf("eux{%05.s}\n", 0));
+	printf("%d\n", ft_printf("moi{%05s}\n", 0));
+//	printf("%d\n", printf("eux%.S\n", L"我是一只猫。" ) - 4);
+//	printf("%d\n", ft_printf("moi%.S\n", L"我是一只猫。" ) - 4);
 //	ft_putchar(0);
 	//printf("%d\n", printf("eux%-15Z"));
 	//ft_printf("%d\n", ft_printf("moi%-15Z"));
-	//printf("%d\n",printf("eux = je  suis %s j'ai |%X| ans\n", "Mathieu", a));
-	//ft_printf("%d\n",ft_printf("moi = je  suis %s j'ai |%X| ans\n", "Mathieu", a));
+//	printf("%d\n",printf("eux = je  suis %05.s j'ai |%X| ans\n", "Mathieu", a));
+//	printf("%d\n",ft_printf("moi = je  suis %05.s j'ai |%X| ans\n", "Mathieu", a));
 	return 0;
 }
