@@ -767,7 +767,14 @@ char *flag_pres(const char *str, char type, char *val)
 	if (ft_strchr("sS", type))
 	{
 		if (ft_atoi(&str[1]) < ft_strlen(val))
-			return (ft_strndup(val, ft_atoi(&str[1])));
+		{
+			int i = 0;
+			while ((unsigned char)val[ft_atoi(&str[1]) - i] < 192)
+				i++;
+			if (i > 3)
+				i = 0;
+			return (ft_strndup(val, ft_atoi(&str[1]) - (i)));
+		}
 	}
 	return (val);
 }
@@ -781,14 +788,13 @@ char *flag_0(const char *str, char type, char *val)
 		return (val);
 	debut = ft_strnew(ft_atoi(str));
 	cpt = ft_atoi(str) - ft_strlen(val);
-//	if (ft_strchr("dDioOuUxX%", type))
-//	{
 		while (cpt > 0)
 		{
 			debut[cpt - 1] = '0';
 			cpt--;
 		}
-//	printf("\tTOTO\n");
+		if (type == 's' && val == NULL)
+			return debut;
 		if (val[1] == 'x' || val[1] == 'X')
 		{
 			temp = val[1];
@@ -813,11 +819,7 @@ char *flag_0(const char *str, char type, char *val)
 			val[0] = debut[0];
 			debut[0] = temp;
 		}
-	//	if (val == NULL)
-	//		return (debut);
-//	printf("\tTOTO\n");
 		return (ft_strcat(debut, val));
-//	}
 	return (val);
 }
 char	*flag_espifpos(char type, char *str)
@@ -975,15 +977,12 @@ char *range_option(char *flag)
 		if (flag[i] >= '1' && flag[i] <= '9')
 		{
 			flag = swapton(flag, i, 0);
-			//temp[j - 1] = '0';
-			// i++;
 			while (flag[i] >= '0' && flag[i] <= '9')
 			{
 				temp[j - 1] = flag[i];
 				i++;
 				flag = swapton(flag, i, j);
 				j++;
-				//i++;
 			}
 			while (flag[i])
 			{
@@ -1038,7 +1037,6 @@ int lenflag(const char *str, char *type, int i)
 	{
 		j++;
 	}
-//	j++;
 	*type = str[j];
 	j++;
 	return ((int)ft_strlen(ft_strndup(&str[i], j - i)));
@@ -1058,7 +1056,6 @@ char *recupflag(const char *str, char *type, int i)
 	{
 		j++;
 	}
-//	j++;
 	*type = str[j];
 	j++;
 	temp = ft_strndup(&str[i], j - i);
@@ -1073,13 +1070,11 @@ char *recupflag(const char *str, char *type, int i)
 			if ((temp[j] == ' ') && (temp[k] == ' ' || temp[k] == '+'))
 			{
 				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
-				//j--;
 				k--;
 			}
 			else if ((temp[j] == '+' ) && (temp[k] == ' ' || temp[k] == '+'))
 			{
 				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
-				//j--;
 				k--;
 			}
 			multi = 1;
@@ -1152,7 +1147,6 @@ int	do_flag(char *flag, char type, char *val)
 	while (*flag != 0)
 	{
 		todo = range_option(flag);
-	//	printf("\t%s\n", todo);
 		if (todo[0] == '#')
 		{
 			val = flag_dies(type, val);
@@ -1166,9 +1160,9 @@ int	do_flag(char *flag, char type, char *val)
 			val = flag_esp(flag, type, val);
 		if (todo[0] == '.')
 		{
-			if ((todo[1] >= '1' && todo[1] <= '9'))
+			if (todo[1]  && (todo[1] >= '1' && todo[1] <= '9'))
 				val = flag_pres(todo, type, val);
-			if (val[0] == '0' && !val[1])
+			if (val && val[0] == '0' && !val[1])
 				val = NULL;
 			if (type == 'p' && ft_strstr(val,"0x0") && !val[3])
 				val = "0x";
@@ -1221,7 +1215,6 @@ int	do_flag(char *flag, char type, char *val)
 		else
 			flag = &flag[ft_strlen(todo)];
 	}
-	//if (type != 'C' && type != 'S')
 		ft_putstr(val);
 	return ((int)ft_strlen(val));
 }
@@ -1275,24 +1268,10 @@ int		option(const char *str, va_list arg, ...)
 					val = ft_strnew(1);
 					val[0] = type;
 				}
-//				ft_putstr("<<");
-//				ft_putstr(val);
-//				ft_putstr(">>");
 				i = i + len2;
 				len = len - len2 - 1;
 				len = len + do_flag(flag, type, val);
 			}
-			/*else if (str[i] == 'C' || str[i] == 'S')
-			{
-				if (str[i] == 'S')
-				{
-				//	len = len + convparaminS(arg) - 1;
-				}
-				else
-				//	len = len + convparaminC(arg) - 1;
-				i++;
-				len--;	
-			}*/
 			else
 				len--;
 		}

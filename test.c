@@ -16,10 +16,10 @@ int     main()
 	b = 12345;
 //	printf("%d\n", printf("eux|%010x|", 542));
 //	ft_printf("%d\n", ft_printf("moi|%010x|", 542));
-	printf("%d\n", printf("eux{%05.s}\n", 0));
-	printf("%d\n", ft_printf("moi{%05s}\n", 0));
-//	printf("%d\n", printf("eux%.S\n", L"我是一只猫。" ) - 4);
-//	printf("%d\n", ft_printf("moi%.S\n", L"我是一只猫。" ) - 4);
+//	printf("%d\n", printf("eux{%.4s}\n", "bonjour") - 6);
+//	printf("%d\n", ft_printf("moi{%.4s}\n", "bonjour") - 6);
+	printf("%d\n", printf("eux%.4S\n", L"ಖ" ) - 4);
+	printf("%d\n", ft_printf("moi%.4S\n", L"ಖ" ) - 4);
 //	ft_putchar(0);
 	//printf("%d\n", printf("eux%-15Z"));
 	//ft_printf("%d\n", ft_printf("moi%-15Z"));
