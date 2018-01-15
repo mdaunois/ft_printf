@@ -6,13 +6,28 @@
 #    By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/29 15:12:41 by clecalie          #+#    #+#              #
-#    Updated: 2018/01/12 13:56:14 by mdaunois         ###   ########.fr        #
+#    Updated: 2018/01/15 15:15:27 by mdaunois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libftprintf.a
 
-SRCS =	ft_printf.c
+SRCS =	ft_printf.c\
+	   	ft_itoa_long.c\
+		ft_itoa_uim.c\
+		ft_itoabase_uintmax.c\
+		ft_itoabase.c\
+		ft_itoabase_long.c\
+		recup_val.c\
+		recup_val_suite.c\
+		aplication_des_flag.c\
+		aplication_des_flag_suite.c\
+		convertion.c\
+		outil.c\
+		recup_flag.c\
+		modif_val.c\
+		flag_a_appliquer.c\
+		flagbig_c.c
 
 OBJ = $(SRCS:.c=.o)
 
