@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:16:01 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 16:37:22 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/15 17:28:58 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		if (flag[i] == '#')
 		{
 			swapton(flag, i, 0);
-			free(temp);
+			ft_strdel(&temp);
 			return ("#");
 		}
 	i = -1;
@@ -30,7 +30,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		if (flag[i] == '+')
 		{
 			swapton(flag, i, 0);
-			free(temp);
+			ft_strdel(&temp);
 			return ("+");
 		}
 	i = -1;
@@ -38,7 +38,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		if (flag[i] == ' ')
 		{
 			swapton(flag, i, 0);
-			free(temp);
+			ft_strdel(&temp);
 			return (" ");
 		}
 }
@@ -48,7 +48,7 @@ char	*range_option(char *flag)
 	int		i;
 	char	*temp;
 
-	temp = ft_strnew(500);
+	temp = ft_strnew(20);
 	if (ft_strchr(flag, '#') || ft_strchr(flag, '.') ||
 			ft_strchr(flag, '+') || ft_strchr(flag, ' '))
 		return (premierpartie(flag, temp, -1));
@@ -64,6 +64,7 @@ char	*range_option(char *flag)
 	while (flag[++i])
 		if (flag[i] >= '1' && flag[i] <= '9')
 			return (if_number(flag, i, temp));
+	ft_strdel(&temp);
 	return (flag);
 }
 
@@ -114,6 +115,7 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 				i = i + len2;
 				len = len - len2 - 1;
 				len = len + do_flag(flag, type, recupval(0, flag, type, arg));
+				ft_strdel(&flag);
 			}
 			else
 				len--;

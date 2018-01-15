@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 15:20:07 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 15:23:32 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/15 17:10:17 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ int		main(void)
 	ft_putchar(0);
 	printf("%d\n", printf("eux%-15Z"));
 	ft_printf("%d\n", ft_printf("moi%-15Z"));
+	while (a == -1)
+	{}
 	return (0);
 }
