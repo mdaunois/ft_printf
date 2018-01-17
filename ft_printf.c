@@ -41,6 +41,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 			ft_strdel(&temp);
 			return (" ");
 		}
+    return (flag);
 }
 
 char	*range_option(char *flag)

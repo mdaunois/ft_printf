@@ -45,10 +45,16 @@ char	*cleandouble(char *temp, char *type)
 				k--;
 			}
 			else if ((temp[j] == '+') && (temp[k] == ' ' || temp[k] == '+'))
-				temp = ft_strcat(ft_strndup(temp, k), &temp[k-- + 1]);
+            {
+				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
+                k--;
+            }
 			else if ((ft_strchr("idDoOuUxX", *type)) && (temp[j] == '.') &&
 				(temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
-				temp = ft_strcat(ft_strndup(temp, k), &temp[k-- + 1]);
+            {
+				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
+                k--;
+            }
 		}
 	}
 	return (temp);
@@ -65,7 +71,10 @@ char	*cleandouble_2(char *temp)
 		if (temp[j] == '.')
 		{
 			if (multi == 1)
-				temp = ft_strcat(ft_strndup(temp, j), &temp[j-- + 1]);
+            {
+				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+                j--;
+            }
 			multi = 1;
 		}
 	multi = 0;

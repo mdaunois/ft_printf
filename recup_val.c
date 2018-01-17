@@ -82,7 +82,7 @@ char	*type_param_long_long(char str, va_list arg, ...)
 char	*type_param_short(char str, va_list arg, ...)
 {
 	if (str == 'd' || str == 'i')
-		return ((ft_itoa(va_arg(arg, short))));
+		return ((ft_itoa((short)va_arg(arg, int))));
 	if (str == 'D')
 		return (ft_itoa_long(va_arg(arg, long long)));
 	if (str == 'u')
@@ -94,9 +94,9 @@ char	*type_param_short(char str, va_list arg, ...)
 	if (str == 'O')
 		return (ft_itoabase(va_arg(arg, unsigned int), 8));
 	if (str == 'x')
-		return (ft_itoabase(va_arg(arg, unsigned short), 16));
+		return (ft_itoabase((unsigned short)va_arg(arg, int), 16));
 	if (str == 'X')
-		return (mag(ft_itoabase(va_arg(arg, unsigned short), 16)));
+		return (mag(ft_itoabase((unsigned short)va_arg(arg, int), 16)));
 	return (0);
 }
 

@@ -38,13 +38,14 @@ int		affiche_val(char *val, int valc, char *flag)
 	}
 }
 
-char	*flag_presition(char *todo, char type, char *val)
+char	*flag_presition(char *todo, char type, char *val, int *dies)
 {
+    //printf("dies = %d\n", *dies);
 	if (todo[1] && (todo[1] >= '1' && todo[1] <= '9'))
 		return (flag_pres(todo, type, val));
-	if (type == 'p' && ft_strstr(val, "0x0") && !val[3])
+    if (type == 'p' && ft_strstr(val, "0x0") && !val[3])
 		return ("0x");
-	if (val == "0" && (type == 'o' || type == 'O'))
+    if (*dies == 1 && !ft_strcmp(val, "0") && (type == 'o' || type == 'O'))
 		return ("0");
 	if (ft_atoi(&todo[1]) == 0 && (type == 's' || type == 'S'))
 		return ("");
@@ -53,16 +54,20 @@ char	*flag_presition(char *todo, char type, char *val)
 	return (val);
 }
 
-char	*change_val(char *val, char *todo, char type, char *flag)
+char	*change_val(char *val, char *todo, char type, char *flag, int *dies)
 {
 	if (todo[0] == '#')
+    {
 		val = flag_dies(type, val);
+        *dies = 1;
+      //  printf("\ndies = %d\n", *dies);
+    }
 	if (todo[0] == '0')
 		val = flag_0(flag, type, val);
 	if ((todo[0] >= '1' && todo[0] <= '9'))
 		val = flag_esp(flag, type, val);
 	if (todo[0] == '.')
-		val = flag_presition(todo, type, val);
+		val = flag_presition(todo, type, val, dies);
 	if (todo[0] == '-')
 		val = flag_neg(flag, type, val);
 	if (todo[0] == '+')
@@ -87,7 +92,7 @@ int		do_flag(char *flag, char type, char *val)
 	while (*flag != 0)
 	{
 		todo = range_option(flag);
-		val = change_val(val, todo, type, flag);
+		val = change_val(val, todo, type, flag, &dies);
 		if (ft_strchr("SCcidDpsxoOuUX%", flag[0]))
 			return (affiche_val(val, valc, flag));
 		if (ft_strchr("sScCidDoOuUxX", type) && ft_strchr("lhjz", flag[0]))
