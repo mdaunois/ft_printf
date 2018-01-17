@@ -101,6 +101,7 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 	int		len2;
 	char	*flag;
 	char	type;
+    int     j;
 
 	while (str[i])
 		if (str[i] == '%')
@@ -121,7 +122,61 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 				len--;
 		}
 		else
-			ft_putchar(str[i++]);
+        {
+            if (str[i] == '{')
+            {
+                j = i + 1;
+                while (str[j] != '}' && str[j])
+                    j++;
+                flag = ft_strndup(&str[i + 1], j - i - 1);
+                if (!ft_strcmp(flag, "red"))
+                {
+                    ft_putstr("\033[31m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                if (!ft_strcmp(flag, "green"))
+                {
+                    ft_putstr("\033[32m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                if (!ft_strcmp(flag, "yellow"))
+                {
+                    ft_putstr("\033[33m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                if (!ft_strcmp(flag, "blue"))
+                {
+                    ft_putstr("\033[34m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                if (!ft_strcmp(flag, "magenta"))
+                {
+                    ft_putstr("\033[35m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                if (!ft_strcmp(flag, "cyan"))
+                {
+                    ft_putstr("\033[36m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                if (!ft_strcmp(flag, "white") || !ft_strcmp(flag, "eoc"))
+                {
+                    ft_putstr("\033[37m");
+                    i = j + 1;
+                    len = len - (ft_strlen(flag) + 2);
+                }
+                else
+                    ft_putchar(str[i++]);
+            }
+            else
+                ft_putchar(str[i++]);
+        }
 	return (i + len);
 }
 
