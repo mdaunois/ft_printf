@@ -19,7 +19,10 @@ char	*presition_for_num(char *val, char *debut, size_t cpt, const char *str)
 	if (ft_atoi(&str[1]) < ft_strlen(val))
 		return (val);
 	if (ft_atoi(&str[1]) == 0)
-		return (0);
+	{
+		ft_strdel(&val);
+		return (NULL);
+	}
 	while (cpt > 0)
 	{
 		debut[cpt - 1] = '0';
@@ -37,7 +40,9 @@ char	*presition_for_num(char *val, char *debut, size_t cpt, const char *str)
 		val[0] = debut[0];
 		debut[0] = temp;
 	}
-	return (ft_strcat(debut, val));
+	ft_strcat(debut, val);
+	ft_strdel(&val);
+	return (debut);
 }
 
 char	*flag_pres(const char *str, char type, char *val)
@@ -77,7 +82,9 @@ char	*flag_espifpos(char type, char *str)
 	{
 		if (str[0] != '-')
 		{
-			return (ft_strcat(ft_strcat(debut, " "), str));
+			ft_strcat(ft_strcat(debut, " "), str);
+			ft_strdel(&str);
+			return (debut);
 		}
 	}
 	return (str);

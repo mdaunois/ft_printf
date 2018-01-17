@@ -23,7 +23,7 @@ int		lenflag(const char *str, char *type, int i)
 	}
 	*type = str[j];
 	j++;
-	return ((int)ft_strlen(ft_strndup(&str[i], j - i)));
+	return (j - i);
 }
 
 char	*cleandouble(char *temp, char *type)

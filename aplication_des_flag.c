@@ -29,6 +29,7 @@ char	*flag_neg(char *str, char type, char *val)
 		cpt--;
 	}
 	temp = ft_strcpy(temp, val);
+	ft_strdel(&val);
 	return (ft_strcat(temp, debut));
 }
 
@@ -47,9 +48,16 @@ char	*flag_esp(char *str, char type, char *val)
 		cpt--;
 	}
 	if (val != NULL)
-		return (ft_strcat(debut, val));
-	else
+	{
+		ft_strcat(debut, val);
+//		ft_strdel(&val);
 		return (debut);
+	}
+	else
+	{
+		ft_strdel(&val);
+		return (debut);
+	}
 	return (val);
 }
 
@@ -62,7 +70,9 @@ char	*flag_pos(char type, char *str)
 	debut = ft_strnew(ft_strlen(str) + 1);
 		if (str[0] != '-')
 		{
-			return (ft_strcat(ft_strcat(debut, "+"), str));
+			ft_strcat(ft_strcat(debut, "+"), str);
+			ft_strdel(&str);
+			return (debut);
 		}
 	}
 	return (str);
@@ -79,17 +89,23 @@ char	*flag_dies(char type, char *str)
 		if (ft_atoi(str) == 0)
 			return ("0");
 		debut = ft_strnew(ft_strlen(str) + 1);
-		return (ft_strcat(ft_strcat(debut, "0"), str));
+		ft_strcat(ft_strcat(debut, "0"), str);
+		ft_strdel(&str);
+		return (debut);
 	}
 	if (type == 'x')
 	{
 		debut = ft_strnew(ft_strlen(str) + 2);
-		return (ft_strcat(ft_strcat(debut, "0x"), str));
+		ft_strcat(ft_strcat(debut, "0x"), str);
+		ft_strdel(&str);
+		return (debut);
 	}
 	if (type == 'X')
 	{
 		debut = ft_strnew(ft_strlen(str) + 2);
-		return (ft_strcat(ft_strcat(debut, "0X"), str));
+		ft_strcat(ft_strcat(debut, "0X"), str);
+		ft_strdel(&str);
+		return (debut);
 	}
 	return (str);
 }
@@ -111,6 +127,7 @@ char	*flag_0(const char *str, char type, char *val)
 	if (type == 's' && val == NULL)
 		return (debut);
 	val = swap_if(val, debut);
-	return (ft_strcat(debut, val));
-	return (val);
+	ft_strcat(debut, val);
+	//ft_strdel(&val);
+	return (debut);
 }
