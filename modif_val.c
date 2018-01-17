@@ -40,7 +40,6 @@ int		affiche_val(char *val, int valc, char *flag)
 
 char	*flag_presition(char *todo, char type, char *val, int *dies)
 {
-    //printf("dies = %d\n", *dies);
 	if (todo[1] && (todo[1] >= '1' && todo[1] <= '9'))
 		return (flag_pres(todo, type, val));
     if (type == 'p' && ft_strstr(val, "0x0") && !val[3])
@@ -60,7 +59,6 @@ char	*change_val(char *val, char *todo, char type, char *flag, int *dies)
     {
 		val = flag_dies(type, val);
         *dies = 1;
-      //  printf("\ndies = %d\n", *dies);
     }
 	if (todo[0] == '0')
 		val = flag_0(flag, type, val);
@@ -82,7 +80,7 @@ int		do_flag(char *flag, char type, char *val)
 	char	*todo;
 	int		dies;
 	int		valc;
-
+    
 	valc = -1;
 	dies = 0;
 	if (flag == 0)
@@ -102,6 +100,6 @@ int		do_flag(char *flag, char type, char *val)
 		else
 			flag = &flag[ft_strlen(todo)];
 	}
-	ft_putstr(val);
+    ft_putstr(val);
 	return ((int)ft_strlen(val));
 }

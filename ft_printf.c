@@ -19,7 +19,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		{
 			swapton(flag, i, 0);
 			ft_strdel(&temp);
-			return ("#");
+			return (ft_strdup("#"));
 		}
 	i = -1;
 	while (flag[++i])
@@ -31,7 +31,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		{
 			swapton(flag, i, 0);
 			ft_strdel(&temp);
-			return ("+");
+			return (ft_strdup("+"));
 		}
 	i = -1;
 	while (flag[++i])
@@ -39,7 +39,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		{
 			swapton(flag, i, 0);
 			ft_strdel(&temp);
-			return (" ");
+			return (ft_strdup(" "));
 		}
     return (flag);
 }
