@@ -26,7 +26,7 @@ int		main(void)
 	a = -1;
 	c = -2147483649;
 	b = 12345;
-	ft_printf("%d\n", 42);
+	ft_printf("%-5.2s is a string", "this");
 //	printf("%d\n", printf("eux|%#.O|", 0));
 //	printf("%d\n", ft_printf("{red}moi|%#.O|", 0));
 //	printf("%d\n", printf("eux{%.4s}\n", "bonjour") - 6);

@@ -17,7 +17,7 @@ char	*type_param(char str, va_list arg, ...)
 	if (str == 'c')
 		return (conv_char(arg));
 	if (str == 's')
-		return (va_arg(arg, char *));
+		return (ft_strdup(va_arg(arg, char *)));
 	if (str == 'd' || str == 'i')
 		return (ft_itoa(va_arg(arg, int)));
 	if (str == 'u')

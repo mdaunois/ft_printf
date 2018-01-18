@@ -26,11 +26,16 @@ char	*convparaminbig_s(va_list arg, ...)
 	int		i;
 	char	*temp;
 
-	temp = ft_strnew(1000);
 	i = 0;
 	val = va_arg(arg, wchar_t*);
-	if (val == NULL)
-		return (NULL);
+    if (val == NULL)
+        return (NULL);
+    while (val[i])
+    {
+        i++;
+    }
+    temp = ft_strnew(i);
+    i = 0;
 	while (val[i])
 	{
 		temp = ft_strcat(temp, flagbig_c(val[i]));

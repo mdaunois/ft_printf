@@ -17,7 +17,9 @@ char	*flag_neg(char *str, char type, char *val)
 	size_t	cpt;
 	char	*debut;
 	char	*temp;
-
+    
+    debut = NULL;
+    temp = NULL;
 	if (ft_atoi(&str[1]) < ft_strlen(val))
 		return (val);
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
@@ -29,7 +31,8 @@ char	*flag_neg(char *str, char type, char *val)
 		cpt--;
 	}
 	temp = ft_strcpy(temp, val);
-	//ft_strdel(&val);
+    if (ft_strlen(val) > 0)
+        ft_strdel(&val);
 	return (ft_strcat(temp, debut));
 }
 
@@ -38,6 +41,7 @@ char	*flag_esp(char *str, char type, char *val)
 	size_t	cpt;
 	char	*debut;
 
+    debut = NULL;
 	if (ft_atoi(str) < ft_strlen(val))
 		return (val);
 	debut = ft_strnew(ft_atoi(str));
@@ -50,7 +54,8 @@ char	*flag_esp(char *str, char type, char *val)
 	if (val != NULL)
 	{
 		ft_strcat(debut, val);
-//		ft_strdel(&val);
+        if (ft_strlen(val) > 0)
+            ft_strdel(&val);
 		return (debut);
 	}
 	else
@@ -65,6 +70,7 @@ char	*flag_pos(char type, char *str)
 {
 	char	*debut;
 
+    debut = NULL;
 	if (ft_strchr("idD", type))
 	{
 	debut = ft_strnew(ft_strlen(str) + 1);
@@ -82,6 +88,7 @@ char	*flag_dies(char type, char *str)
 {
 	char	*debut;
 
+    debut = NULL;
 	if (ft_atoi(str) == 0 && (type == 'x' || type == 'X'))
 		return ("0");
 	if (type == 'o' || type == 'O')
@@ -115,6 +122,7 @@ char	*flag_0(const char *str, char type, char *val)
 	size_t	cpt;
 	char	*debut;
 
+    debut = NULL;
 	if (ft_atoi(str) <= ft_strlen(val))
 		return (val);
 	debut = ft_strnew(ft_atoi(str));
@@ -128,6 +136,7 @@ char	*flag_0(const char *str, char type, char *val)
 		return (debut);
 	val = swap_if(val, debut);
 	ft_strcat(debut, val);
-	//ft_strdel(&val);
+    if (ft_strlen(val) > 0)
+        ft_strdel(&val);
 	return (debut);
 }

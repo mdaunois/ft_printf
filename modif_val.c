@@ -81,6 +81,7 @@ int		do_flag(char *flag, char type, char *val)
 	int		dies;
 	int		valc;
     
+    todo = NULL;
 	valc = -1;
 	dies = 0;
 	if (flag == 0)
@@ -98,7 +99,12 @@ int		do_flag(char *flag, char type, char *val)
 		else if (ft_strstr(flag, ".154d"))
 			flag = &flag[ft_strlen(todo) + 1];
 		else
+        {
 			flag = &flag[ft_strlen(todo)];
+          //  if (ft_strlen(todo) > 0)
+          //      ft_strdel(&todo);
+        }
+        
 	}
     ft_putstr(val);
 	return ((int)ft_strlen(val));

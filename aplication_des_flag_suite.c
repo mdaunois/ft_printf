@@ -17,9 +17,13 @@ char	*presition_for_num(char *val, char *debut, size_t cpt, const char *str)
 	char	temp;
 
 	if (ft_atoi(&str[1]) < ft_strlen(val))
+    {
+        ft_strdel(&debut);
 		return (val);
+    }
 	if (ft_atoi(&str[1]) == 0)
 	{
+        ft_strdel(&debut);
 		ft_strdel(&val);
 		return (NULL);
 	}
@@ -49,6 +53,7 @@ char	*flag_pres(const char *str, char type, char *val)
 {
 	size_t	cpt;
 	char	*debut;
+    char	*temp;
 	int		i;
 
 	i = 0;
@@ -68,7 +73,10 @@ char	*flag_pres(const char *str, char type, char *val)
 				i++;
 			if (i > 3)
 				i = 0;
-			return (ft_strndup(val, ft_atoi(&str[1]) - (i)));
+            temp = ft_strndup(val, ft_atoi(&str[1]) - (i));
+            if (ft_strlen(val) > 0)
+                ft_strdel(&val);
+			return (temp);
 		}
 	return (val);
 }

@@ -18,7 +18,6 @@ char	*premierpartie(char *flag, char *temp, int i)
 		if (flag[i] == '#')
 		{
 			swapton(flag, i, 0);
-			ft_strdel(&temp);
 			return (ft_strdup("#"));
 		}
 	i = -1;
@@ -30,7 +29,6 @@ char	*premierpartie(char *flag, char *temp, int i)
 		if (flag[i] == '+')
 		{
 			swapton(flag, i, 0);
-			ft_strdel(&temp);
 			return (ft_strdup("+"));
 		}
 	i = -1;
@@ -38,8 +36,7 @@ char	*premierpartie(char *flag, char *temp, int i)
 		if (flag[i] == ' ')
 		{
 			swapton(flag, i, 0);
-			ft_strdel(&temp);
-			return (ft_strdup(" "));
+            return (ft_strdup(" "));
 		}
     return (flag);
 }
@@ -49,7 +46,7 @@ char	*range_option(char *flag)
 	int		i;
 	char	*temp;
 
-	temp = ft_strnew(20);
+    temp = NULL;
 	if (ft_strchr(flag, '#') || ft_strchr(flag, '.') ||
 			ft_strchr(flag, '+') || ft_strchr(flag, ' '))
 		return (premierpartie(flag, temp, -1));
@@ -65,11 +62,8 @@ char	*range_option(char *flag)
 	while (flag[++i])
 		if (flag[i] >= '1' && flag[i] <= '9')
         {
-            ft_strdel(&temp);
-            temp = ft_strnew(ft_atoi(&flag[i]));
 			return (if_number(flag, i, temp));
         }
-	ft_strdel(&temp);
 	return (flag);
 }
 
