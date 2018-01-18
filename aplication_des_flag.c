@@ -29,7 +29,7 @@ char	*flag_neg(char *str, char type, char *val)
 		cpt--;
 	}
 	temp = ft_strcpy(temp, val);
-	ft_strdel(&val);
+	//ft_strdel(&val);
 	return (ft_strcat(temp, debut));
 }
 

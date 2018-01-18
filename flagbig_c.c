@@ -40,9 +40,12 @@ char	*flagbig_c(wchar_t value)
 	unsigned int	v;
 	long			size;
 	char			*octet;
+    char            *bin;
 
 	v = value;
-	size = ft_strlen((ft_itoabase((unsigned int)value, 2)));
+    bin = (ft_itoabase((unsigned int)value, 2));
+	size = ft_strlen(bin);
+    ft_strdel(&bin);
 	if (size <= 7)
 	{
 		octet = ft_strnew(1);

@@ -64,7 +64,11 @@ char	*range_option(char *flag)
 	i = -1;
 	while (flag[++i])
 		if (flag[i] >= '1' && flag[i] <= '9')
+        {
+            ft_strdel(&temp);
+            temp = ft_strnew(ft_atoi(&flag[i]));
 			return (if_number(flag, i, temp));
+        }
 	ft_strdel(&temp);
 	return (flag);
 }

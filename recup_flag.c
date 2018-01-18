@@ -92,7 +92,6 @@ char	*cleandouble_2(char *temp)
 
 char	*recupflag(const char *str, char *type, int i)
 {
-	int		j;
 	char	*temp;
 	int		multi;
 

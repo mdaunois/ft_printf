@@ -17,6 +17,8 @@ char	*if_point(char *flag, int i, char *temp)
 	int j;
 
 	j = 1;
+    ft_strdel(&temp);
+    temp = ft_strnew(ft_atoi(&flag[1]));
 	flag = swapton(flag, i, 0);
 	temp[j - 1] = '.';
 	i++;
@@ -27,14 +29,6 @@ char	*if_point(char *flag, int i, char *temp)
 		j++;
 		i++;
 	}
-	while (flag[i])
-	{
-		if (flag[i] == '0')
-		{
-			flag = ft_strcat(ft_strndup(flag, i), &flag[i]);
-		}
-		i++;
-	}
 	return (temp);
 }
 
@@ -43,6 +37,8 @@ char	*if_0(char *flag, int i, char *temp)
 	int j;
 
 	j = 1;
+    ft_strdel(&temp);
+    temp = ft_strnew(ft_atoi(&flag[1]));
 	flag = swapton(flag, i, 0);
 	temp[j - 1] = '0';
 	i++;
@@ -53,14 +49,6 @@ char	*if_0(char *flag, int i, char *temp)
 		j++;
 		i++;
 	}
-	while (flag[i])
-	{
-		if (flag[i] == '0')
-		{
-			flag = ft_strcat(ft_strndup(flag, i), &flag[i]);
-		}
-		i++;
-	}
 	return (temp);
 }
 
@@ -69,6 +57,8 @@ char	*if_negatif(char *flag, int i, char *temp)
 	int j;
 
 	j = 1;
+    ft_strdel(&temp);
+    temp = ft_strnew(ft_atoi(&flag[1]));
 	flag = swapton(flag, i, 0);
 	temp[j - 1] = '-';
 	i++;
@@ -79,14 +69,6 @@ char	*if_negatif(char *flag, int i, char *temp)
 		j++;
 		i++;
 	}
-	while (flag[i])
-	{
-		if (flag[i] == '0')
-		{
-			flag = ft_strcat(ft_strndup(flag, i), &flag[i]);
-		}
-		i++;
-	}
 	return (temp);
 }
 
@@ -95,6 +77,8 @@ char	*if_number(char *flag, int i, char *temp)
 	int j;
 
 	j = 1;
+    ft_strdel(&temp);
+    temp = ft_strnew(ft_atoi(&flag[0]));
 	flag = swapton(flag, i, 0);
 	while (flag[i] >= '0' && flag[i] <= '9')
 	{
@@ -102,14 +86,6 @@ char	*if_number(char *flag, int i, char *temp)
 		i++;
 		flag = swapton(flag, i, j);
 		j++;
-	}
-	while (flag[i])
-	{
-		if (flag[i] == '0')
-		{
-			flag = ft_strcat(ft_strndup(flag, i), &flag[i]);
-		}
-		i++;
 	}
 	return (temp);
 }
