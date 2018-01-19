@@ -20,7 +20,7 @@ char	*between12and16(unsigned int v)
 	octet[0] = ((long)14712960 >> 16) | ((v >> 12) << 28) >> 28;
 	octet[1] = (((long)14712960 << 16) >> 24) | ((v >> 6) << 26) >> 26;
 	octet[2] = (((long)14712960 << 24) >> 24) | (v << 26) >> 26;
-	return ((char *)octet);
+	return (octet);
 }
 
 char	*for_more_16(unsigned int v)

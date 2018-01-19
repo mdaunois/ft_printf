@@ -22,12 +22,14 @@ char	*convparaminbig_c(va_list arg, ...)
 
 char	*convparaminbig_s(va_list arg, ...)
 {
-	wchar_t	*val;
-	int		i;
-	char	*temp;
-
-	i = 0;
-	val = va_arg(arg, wchar_t*);
+    wchar_t    *val;
+    int        i;
+    char    *temp;
+    char    *lettre;
+    
+    lettre = NULL;
+    i = 0;
+    val = va_arg(arg, wchar_t*);
     if (val == NULL)
         return (NULL);
     while (val[i])
@@ -36,12 +38,14 @@ char	*convparaminbig_s(va_list arg, ...)
     }
     temp = ft_strnew(i);
     i = 0;
-	while (val[i])
-	{
-		temp = ft_strcat(temp, flagbig_c(val[i]));
-		i++;
-	}
-	return (temp);
+    while (val[i])
+    {
+        lettre = flagbig_c(val[i]);
+        temp = ft_strcat(temp, lettre);
+        ft_strdel(&lettre);
+        i++;
+    }
+    return (temp);
 }
 
 char	*conv_char(va_list arg)
@@ -58,10 +62,13 @@ char	*conv_char(va_list arg)
 
 char	*conv_adresse(va_list arg, ...)
 {
-	unsigned long	p;
-	char			*temp;
-
-	p = va_arg(arg, unsigned long);
-	temp = ft_strnew(nblen(p) + 2);
-	return (ft_strcat(ft_strcat(temp, "0x"), ft_itoabase(p, 16)));
+    unsigned long    p;
+    char            *temp;
+    char            *val;
+    
+    p = va_arg(arg, unsigned long);
+    temp = ft_itoabase(p, 16);
+    val = ft_strjoin("0x", temp);
+    ft_strdel(&temp);
+    return (val);
 }

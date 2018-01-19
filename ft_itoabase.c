@@ -44,6 +44,7 @@ char		*ft_itoabase(long n, int base)
 		return (0);
 	if (n == 0)
 	{
+        ft_strdel(&str);
 		str = ft_strdup("0");
 		return (str);
 	}

@@ -41,6 +41,7 @@ char		*ft_itoa(int n)
 		return (0);
 	if (nb == 0)
 	{
+        ft_strdel(&str);
 		str = ft_strdup("0");
 		return (str);
 	}

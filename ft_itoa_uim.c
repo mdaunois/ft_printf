@@ -36,7 +36,11 @@ char		*ft_itoa_uim(uintmax_t n)
 	if (!(str = ft_strnew(get_lengt(n))))
 		return (0);
 	if (n == 0)
-		return (ft_strdup("0"));
+    {
+        ft_strdel(&str);
+        str = ft_strdup("0");
+		return (str);
+    }
 	while (n != 0)
 	{
 		str[i++] = (n % 10) + '0';

@@ -37,7 +37,7 @@ int		affiche_val(char *val, int valc, char *flag)
 	{
         if (ft_strlen(val) > 0)
         {
-            len = strlen(val);
+            len = (int)strlen(val);
             ft_putstr(val);
             ft_strdel(&val);
             return (len);
@@ -89,6 +89,7 @@ char	*change_val(char *val, char *todo, char type, char *flag, int *dies)
 int		do_flag(char *flag, char type, char *val)
 {
 	char	*todo;
+    char    *temp;
 	int		dies;
 	int		valc;
     
@@ -104,19 +105,35 @@ int		do_flag(char *flag, char type, char *val)
 		todo = range_option(flag);
 		val = change_val(val, todo, type, flag, &dies);
 		if (ft_strchr("SCcidDpsxoOuUX", flag[0]))
+        {
+            ft_strdel(&todo);
 			return (affiche_val(val, valc, flag));
+        }
 		if (ft_strchr("sScCidDoOuUxX", type) && ft_strchr("lhjz", flag[0]))
-			flag = ft_strdup(&flag[ft_strlen(todo) - 1]);
+        {
+            temp = ft_strdup(&flag[ft_strlen(todo)] - 1);
+            //if (ft_strlen(flag) > 0)
+            ft_strdel(&flag);
+            flag = ft_strdup(temp);
+            ft_strdel(&temp);
+            ft_strdel(&todo);
+        }
 		else if (ft_strstr(flag, ".154d"))
 			flag = &flag[ft_strlen(todo) + 1];
 		else
         {
-			flag = &flag[ft_strlen(todo)];
-          //  if (ft_strlen(todo) > 0)
-          //      ft_strdel(&todo);
+			temp = ft_strdup(&flag[ft_strlen(todo)]);
+            //if (ft_strlen(flag) > 0)
+            ft_strdel(&flag);
+            flag = ft_strdup(temp);
+            ft_strdel(&temp);
+            ft_strdel(&todo);
         }
         
 	}
     ft_putstr(val);
-	return ((int)ft_strlen(val));
+    dies = (int)ft_strlen(val);
+    if (dies > 0)
+        ft_strdel(&val);
+	return (dies);
 }

@@ -41,7 +41,11 @@ char		*ft_itoa_long(intmax_t n)
 	else
 		nb = n;
 	if (nb == 0)
-		return (ft_strdup("0"));
+    {
+        ft_strdel(&str);
+        str = ft_strdup("0");
+		return (str);
+    }
 	while (nb != 0)
 	{
 		str[i++] = (nb % 10) + '0';

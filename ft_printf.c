@@ -64,7 +64,7 @@ char	*range_option(char *flag)
         {
 			return (if_number(flag, i, temp));
         }
-	return (flag);
+	return (ft_strdup(flag));
 }
 
 char	*recupval(char *val, char *flag, char type, va_list arg, ...)
@@ -108,6 +108,11 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 			i++;
 			if (!str[i])
 				return (len + i - 1);
+            else if (str[i] == '%')
+            {
+                ft_putchar(str[i++]);
+                len--;
+            }
 			else if ((ft_strchr("%SCcsidDpxXoOuU0123456789-+.# hljz", str[i])))
 			{
 				len2 = lenflag(str, &type, i);
@@ -115,7 +120,8 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 				i = i + len2;
 				len = len - len2 - 1;
 				len = len + do_flag(flag, type, recupval(0, flag, type, arg));
-				ft_strdel(&flag);
+                if (ft_strlen(flag) > 0)
+                    ft_strdel(&flag);
 			}
 			else
 				len--;
