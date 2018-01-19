@@ -36,7 +36,7 @@ char	*convparaminbig_s(va_list arg, ...)
     {
         i++;
     }
-    temp = ft_strnew(i);
+    temp = ft_strnew(i * 3);
     i = 0;
     while (val[i])
     {
