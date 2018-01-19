@@ -33,7 +33,10 @@ char	*flag_neg(char *str, char type, char *val)
 	temp = ft_strcpy(temp, val);
     if (ft_strlen(val) > 0)
         ft_strdel(&val);
-	return (ft_strcat(temp, debut));
+    ft_strcat(temp, debut);
+    if (ft_strlen(debut) > 0)
+        ft_strdel(&debut);
+	return (temp);
 }
 
 char	*flag_esp(char *str, char type, char *val)
@@ -90,11 +93,11 @@ char	*flag_dies(char type, char *str)
 
     debut = NULL;
 	if (ft_atoi(str) == 0 && (type == 'x' || type == 'X'))
-		return ("0");
+		return (ft_strdup("0"));
 	if (type == 'o' || type == 'O')
 	{
 		if (ft_atoi(str) == 0)
-			return ("0");
+			return (ft_strdup("0"));
 		debut = ft_strnew(ft_strlen(str) + 1);
 		ft_strcat(ft_strcat(debut, "0"), str);
 		ft_strdel(&str);

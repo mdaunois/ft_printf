@@ -26,7 +26,8 @@ int		main(void)
 	a = -1;
 	c = -2147483649;
 	b = 12345;
-	ft_printf("%-5.2s is a string", "this");
+	printf("  %d\n", ft_printf("%s %C %d %p %x %% %S", "bonjour ", L'該', 42, &free, 42, L"لحم خنزير"));
+    printf("  %d\n", printf("%s %C %d %p %x %% %S", "bonjour ", L'該', 42, &free, 42, L"لحم خنزير"));
 //	printf("%d\n", printf("eux|%#.O|", 0));
 //	printf("%d\n", ft_printf("{red}moi|%#.O|", 0));
 //	printf("%d\n", printf("eux{%.4s}\n", "bonjour") - 6);
@@ -35,6 +36,6 @@ int		main(void)
 //	printf("%d\n", ft_printf("moi%.4S\n", L"ಖ") - 4);
 //	printf("%d\n", printf("eux%-15Z"));
 //	ft_printf("%d\n", ft_printf("moi%-15Z"));
-	while(1);
+//	while(1);
 	return (0);
 }

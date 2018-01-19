@@ -27,6 +27,7 @@ char	*presition_for_num(char *val, char *debut, size_t cpt, const char *str)
 		ft_strdel(&val);
 		return (NULL);
 	}
+    debut = ft_strnew(ft_atoi(&str[1]));
 	while (cpt > 0)
 	{
 		debut[cpt - 1] = '0';
@@ -52,12 +53,10 @@ char	*presition_for_num(char *val, char *debut, size_t cpt, const char *str)
 char	*flag_pres(const char *str, char type, char *val)
 {
 	size_t	cpt;
-	char	*debut;
     char	*temp;
 	int		i;
 
 	i = 0;
-	debut = ft_strnew(ft_atoi(&str[1]));
 	cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	if (val[0] == '-')
 		cpt++;
@@ -65,7 +64,7 @@ char	*flag_pres(const char *str, char type, char *val)
 				(val[1] == 'x' || val[1] == 'X'))
 		cpt = cpt + 2;
 	if (ft_strchr("pdDioOuUxX", type))
-		return (presition_for_num(val, debut, cpt, str));
+		return (presition_for_num(val, NULL, cpt, str));
 	if (ft_strchr("sS", type))
 		if (ft_atoi(&str[1]) < ft_strlen(val))
 		{

@@ -14,6 +14,8 @@
 
 int		affiche_val(char *val, int valc, char *flag)
 {
+    int len;
+    
 	if (valc == 0)
 	{
 		val[ft_strlen(val) - 1] = 0;
@@ -33,8 +35,17 @@ int		affiche_val(char *val, int valc, char *flag)
 	}
 	else
 	{
+        if (ft_strlen(val) > 0)
+        {
+            len = strlen(val);
+            ft_putstr(val);
+            ft_strdel(&val);
+            return (len);
+        }
+        else
+            len = 0;
 		ft_putstr(val);
-		return ((int)ft_strlen(val));
+		return (len);
 	}
 }
 
@@ -43,11 +54,11 @@ char	*flag_presition(char *todo, char type, char *val, int *dies)
 	if (todo[1] && (todo[1] >= '1' && todo[1] <= '9'))
 		return (flag_pres(todo, type, val));
     if (type == 'p' && ft_strstr(val, "0x0") && !val[3])
-		return ("0x");
+		return (ft_strdup("0x"));
     if (*dies == 1 && !ft_strcmp(val, "0") && (type == 'o' || type == 'O'))
-		return ("0");
+		return (ft_strdup("0"));
 	if (ft_atoi(&todo[1]) == 0 && (type == 's' || type == 'S'))
-		return ("");
+		return (ft_strdup(""));
 	if (val && val[0] == '0' && !val[1])
 		return (NULL);
 	return (val);
@@ -92,7 +103,7 @@ int		do_flag(char *flag, char type, char *val)
 	{
 		todo = range_option(flag);
 		val = change_val(val, todo, type, flag, &dies);
-		if (ft_strchr("SCcidDpsxoOuUX%", flag[0]))
+		if (ft_strchr("SCcidDpsxoOuUX", flag[0]))
 			return (affiche_val(val, valc, flag));
 		if (ft_strchr("sScCidDoOuUxX", type) && ft_strchr("lhjz", flag[0]))
 			flag = ft_strdup(&flag[ft_strlen(todo) - 1]);

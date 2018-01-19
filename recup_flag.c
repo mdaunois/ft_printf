@@ -95,6 +95,7 @@ char	*recupflag(const char *str, char *type, int i)
 	char	*temp;
 	int		multi;
 
+    temp = NULL;
 	temp = ft_strndup(&str[i], lenflag(str, type, i));
 	temp = cleandouble(temp, type);
 	multi = 0;
