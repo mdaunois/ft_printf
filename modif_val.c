@@ -122,7 +122,15 @@ int		do_flag(char *flag, char type, char *val)
             ft_strdel(&todo);
         }
 		else if (ft_strstr(flag, ".154d"))
-			flag = &flag[ft_strlen(todo) + 1];
+        {
+            temp = ft_strdup(&flag[ft_strlen(todo)] + 1);
+            //if (ft_strlen(flag) > 0)
+            ft_strdel(&flag);
+            flag = ft_strdup(temp);
+            ft_strdel(&temp);
+            ft_strdel(&todo);
+
+        }
 		else
         {
 			temp = ft_strdup(&flag[ft_strlen(todo)]);
