@@ -66,17 +66,22 @@ char	*flag_pres(const char *str, char type, char *val)
 	if (ft_strchr("pdDioOuUxX", type))
 		return (presition_for_num(val, NULL, cpt, str));
 	if (ft_strchr("sS", type))
-		if (ft_atoi(&str[1]) < ft_strlen(val))
+    {
+		if (ft_atoi(&str[1]) < (int)ft_strlen(val))
 		{
-			while ((unsigned char)val[ft_atoi(&str[1]) - i] < 192)
-				i++;
-			if (i > 3)
-				i = 0;
+            if (type == 'S')
+            {
+                while ((unsigned char)val[ft_atoi(&str[1]) - i] < 192)
+                    i++;
+                if (i > 3)
+                    i = 0;
+             }
             temp = ft_strndup(val, ft_atoi(&str[1]) - (i));
             if (ft_strlen(val) > 0)
                 ft_strdel(&val);
 			return (temp);
 		}
+    }
 	return (val);
 }
 

@@ -31,15 +31,18 @@ int		affiche_val(char *val, int valc, char *flag)
 	else if (ft_strchr("sS", flag[0]) && val == NULL)
 	{
 		ft_putstr("(null)");
+        ft_strdel(&flag);
 		return (6);
 	}
 	else
 	{
         if (ft_strlen(val) > 0)
         {
-            len = (int)strlen(val);
+            len = (int)ft_strlen(val);
             ft_putstr(val);
             ft_strdel(&val);
+            //if (ft_strlen(flag) > 0)
+            ft_strdel(&flag);
             return (len);
         }
         else

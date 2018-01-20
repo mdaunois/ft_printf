@@ -120,8 +120,8 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 				i = i + len2;
 				len = len - len2 - 1;
 				len = len + do_flag(flag, type, recupval(0, flag, type, arg));
-                if (ft_strlen(flag) > 0)
-                    ft_strdel(&flag);
+              //  if (ft_strlen(flag) > 0)
+              //      ft_strdel(&flag);
 			}
 			else
 				len--;
