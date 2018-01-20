@@ -21,11 +21,13 @@ int		affiche_val(char *val, int valc, char *flag)
 		val[ft_strlen(val) - 1] = 0;
 		ft_putstr(val);
 		ft_putchar(0);
+        ft_strdel(&flag);
 		return ((int)ft_strlen(val) + 1);
 	}
-	if ((ft_strchr("cC", flag[0]) && val[0] == 0))
+	else if ((ft_strchr("cC", flag[0]) && val[0] == 0))
 	{
 		ft_putchar(0);
+        ft_strdel(&flag);
 		return (1);
 	}
 	else if (ft_strchr("sS", flag[0]) && val == NULL)
@@ -40,14 +42,15 @@ int		affiche_val(char *val, int valc, char *flag)
         {
             len = (int)ft_strlen(val);
             ft_putstr(val);
+            if (ft_strchr("dDpsxoOuUXSC", flag[0]) || valc == 1)
+                ft_strdel(&flag);
             ft_strdel(&val);
-            //if (ft_strlen(flag) > 0)
-            ft_strdel(&flag);
             return (len);
         }
         else
             len = 0;
 		ft_putstr(val);
+        ft_strdel(&flag);
 		return (len);
 	}
 }
@@ -103,6 +106,8 @@ int		do_flag(char *flag, char type, char *val)
 		return (0);
 	if (type == 'c' && !ft_strcmp(val, ""))
 		valc = 0;
+    if (!ft_strcmp(flag, "hhd") && !ft_strcmp(val, "0"))
+        valc = 1;
 	while (*flag != 0)
 	{
 		todo = range_option(flag);
@@ -115,27 +120,17 @@ int		do_flag(char *flag, char type, char *val)
 		if (ft_strchr("sScCidDoOuUxX", type) && ft_strchr("lhjz", flag[0]))
         {
             temp = ft_strdup(&flag[ft_strlen(todo)] - 1);
-            //if (ft_strlen(flag) > 0)
-            ft_strdel(&flag);
+           // if (ft_strlen(flag) > 0)
+                ft_strdel(&flag);
             flag = ft_strdup(temp);
             ft_strdel(&temp);
             ft_strdel(&todo);
-        }
-		else if (ft_strstr(flag, ".154d"))
-        {
-            temp = ft_strdup(&flag[ft_strlen(todo)] + 1);
-            //if (ft_strlen(flag) > 0)
-            ft_strdel(&flag);
-            flag = ft_strdup(temp);
-            ft_strdel(&temp);
-            ft_strdel(&todo);
-
         }
 		else
         {
 			temp = ft_strdup(&flag[ft_strlen(todo)]);
-            //if (ft_strlen(flag) > 0)
-            ft_strdel(&flag);
+           // if (ft_strlen(flag) > 0)
+                ft_strdel(&flag);
             flag = ft_strdup(temp);
             ft_strdel(&temp);
             ft_strdel(&todo);

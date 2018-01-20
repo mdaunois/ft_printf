@@ -69,7 +69,6 @@ int		main(void)
     ft_printf("%s%s\n", "test", "test");
     ft_printf("%s%s%s\n", "test", "test", "test");
     ft_printf("%C\n", 15000);
-   // while (1);
     printf("  %d\n", printf("%s %C %d %p %x %% %S", "bonjour ", L'該', 42, &free, 42, L"لحم خنزير"));
 	printf("%d\n", printf("eux|%#.O|", 0));
 	printf("%d\n", ft_printf("{red}moi|%#.O|", 0));
@@ -84,7 +83,8 @@ int		main(void)
     printf("  %d\n", ft_printf("%15.4S", L"我是一只猫。"));
     printf("  %d\n", printf("%15.4S", L"我是一只猫。"));
     printf("  %d\n", ft_printf("%4.15d", 42));
-    printf("  %d\n", ft_printf("%4.15d", 42));
+    printf("  %d\n", printf("%4.15d", 42));
+    printf("{%-30d}\n", 10000);
 
 //	while(1);
 	return (0);
