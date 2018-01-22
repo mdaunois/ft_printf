@@ -26,7 +26,7 @@ int		lenflag(const char *str, char *type, int i)
 	return (j - i);
 }
 
-char	*cleandouble(char *temp, char *type)
+char	*cleandouble(char *temp, char type)
 {
 	int j;
 	int k;
@@ -49,7 +49,7 @@ char	*cleandouble(char *temp, char *type)
 				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
                 k--;
             }
-			else if ((ft_strchr("idDoOuUxX", *type)) && (temp[j] == '.') &&
+			else if ((ft_strchr("idDoOuUxX", type)) && (temp[j] == '.') &&
 				(temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
             {
 				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
@@ -102,13 +102,13 @@ char	*cleandouble_2(char *temp)
 	return (temp);
 }
 
-char	*recupflag(const char *str, char *type, int i)
+char	*recupflag(const char *str, char type, int i)
 {
 	char	*temp;
 	int		multi;
 
     temp = NULL;
-	if (!(temp = ft_strndup(&str[i], lenflag(str, type, i))))
+	if (!(temp = ft_strndup(&str[i], lenflag(str, &type, i))))
         return (0);
 	temp = cleandouble(temp, type);
 	multi = 0;

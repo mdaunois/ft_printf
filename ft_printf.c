@@ -45,14 +45,13 @@ char	*range_option(char *flag)
 {
 	int		i;
 	char	*temp;
-
     temp = NULL;
 	if (ft_strchr(flag, '#') || ft_strchr(flag, '.') ||
 			ft_strchr(flag, '+') || ft_strchr(flag, ' '))
 		return (premierpartie(flag, temp, -1));
 	i = -1;
 	while (flag[++i])
-		if (flag[i] == '0' && (flag[i - 1] < '0' || flag[i - 1] > '9'))
+		if (flag[i] == '0' && (i == 0 || (flag[i - 1] < '0' || flag[i - 1] > '9')))
 			return (if_0(flag, i, temp));
 	i = -1;
 	while (flag[++i])
@@ -61,9 +60,7 @@ char	*range_option(char *flag)
 	i = -1;
 	while (flag[++i])
 		if (flag[i] >= '1' && flag[i] <= '9')
-        {
 			return (if_number(flag, i, temp));
-        }
 	return (ft_strdup(flag));
 }
 
@@ -120,7 +117,7 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 				len2 = lenflag(str, &type, i);
               //  if (type != '\0' && ft_strchr("SCcsidDpxXoOuU%", type))
               //  {
-                    flag = recupflag(str, &type, i);
+                    flag = recupflag(str, type, i);
                     i = i + len2;
                     len = len - len2 - 1;
                     len = len + do_flag(flag, type, recupval(0, flag, type, arg));
