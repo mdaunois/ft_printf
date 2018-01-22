@@ -69,6 +69,8 @@ char	*range_option(char *flag)
 
 char	*recupval(char *val, char *flag, char type, va_list arg, ...)
 {
+    if (flag == NULL)
+        return (val);
 	if (type == 'S')
 		val = convparaminbig_s(arg);
 	else if (type == 'C')
@@ -116,12 +118,18 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 			else if ((ft_strchr("%SCcsidDpxXoOuU0123456789-+.# hljz", str[i])))
 			{
 				len2 = lenflag(str, &type, i);
-				flag = recupflag(str, &type, i);
-				i = i + len2;
-				len = len - len2 - 1;
-				len = len + do_flag(flag, type, recupval(0, flag, type, arg));
-              //  if (ft_strlen(flag) > 0)
-              //      ft_strdel(&flag);
+              //  if (type != '\0' && ft_strchr("SCcsidDpxXoOuU%", type))
+              //  {
+                    flag = recupflag(str, &type, i);
+                    i = i + len2;
+                    len = len - len2 - 1;
+                    len = len + do_flag(flag, type, recupval(0, flag, type, arg));
+             //   }
+             //   else
+             //   {
+             //       i = i + len2 - 1;
+              //      len = len - len2;
+               // }
 			}
 			else
 				len--;

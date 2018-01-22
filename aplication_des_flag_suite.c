@@ -75,6 +75,8 @@ char	*flag_pres(const char *str, char type, char *val)
                     i++;
                 if (i > 3)
                     i = 0;
+                else
+                    i = i % 3;
              }
             temp = ft_strndup(val, ft_atoi(&str[1]) - (i));
             if (ft_strlen(val) > 0)

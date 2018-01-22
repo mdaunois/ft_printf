@@ -17,7 +17,7 @@ int		lenflag(const char *str, char *type, int i)
 	int j;
 
 	j = i;
-	while (ft_strchr("0123456789-+.# hljz", str[j]))
+	while (ft_strchr("0123456789-+.# hljz", str[j]) && str[j])
 	{
 		j++;
 	}
@@ -41,18 +41,18 @@ char	*cleandouble(char *temp, char *type)
 				k++;
 			if ((temp[j] == ' ') && (temp[k] == ' ' || temp[k] == '+'))
 			{
-				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
 				k--;
 			}
 			else if ((temp[j] == '+') && (temp[k] == ' ' || temp[k] == '+'))
             {
-				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
+				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
                 k--;
             }
 			else if ((ft_strchr("idDoOuUxX", *type)) && (temp[j] == '.') &&
 				(temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
             {
-				temp = ft_strcat(ft_strndup(temp, k), &temp[k + 1]);
+				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
                 k--;
             }
 		}
@@ -72,11 +72,23 @@ char	*cleandouble_2(char *temp)
 		{
 			if (multi == 1)
             {
-				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
                 j--;
             }
 			multi = 1;
 		}
+    multi = 0;
+    j = -1;
+    while (temp[++j])
+        if (temp[j] == '#')
+        {
+            if (multi == 1)
+            {
+                temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
+                j--;
+            }
+            multi = 1;
+        }
 	multi = 0;
 	j = -1;
 	while (temp[++j])
@@ -84,7 +96,7 @@ char	*cleandouble_2(char *temp)
 					(temp[j - 1] < '0' || temp[j - 1] > '9') && multi == 1))
 		{
 			if (multi == 1)
-				temp = ft_strcat(ft_strndup(temp, j), &temp[j + 1]);
+				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
 			multi = 1;
 		}
 	return (temp);
@@ -96,7 +108,8 @@ char	*recupflag(const char *str, char *type, int i)
 	int		multi;
 
     temp = NULL;
-	temp = ft_strndup(&str[i], lenflag(str, type, i));
+	if (!(temp = ft_strndup(&str[i], lenflag(str, type, i))))
+        return (0);
 	temp = cleandouble(temp, type);
 	multi = 0;
 	temp = cleandouble_2(temp);

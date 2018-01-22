@@ -36,7 +36,13 @@ int		affiche_val(char *val, int valc, char *flag)
         ft_strdel(&flag);
 		return (6);
 	}
-	else
+    /*else if (ft_strchr("S", flag[0]) && val == NULL)
+    {
+        ft_putstr("");
+        ft_strdel(&flag);
+        return (-1);
+    }
+*/	else
 	{
         if (ft_strlen(val) > 0)
         {

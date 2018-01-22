@@ -41,7 +41,7 @@ char	*convparaminbig_s(va_list arg, ...)
     while (val[i])
     {
         lettre = flagbig_c(val[i]);
-        temp = ft_strcat(temp, lettre);
+        temp = ft_strcat(temp, lettre);//a la place du ft_strcat
         ft_strdel(&lettre);
         i++;
     }

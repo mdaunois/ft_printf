@@ -52,15 +52,17 @@ char	*flagbig_c(wchar_t value)
 		octet[0] = value;
 		return ((char *)octet);
 	}
-	else if (size <= 11)
+	else if (size <= 11)// && MB_CUR_MAX > 1)
 	{
 		octet = ft_strnew(2);
 		octet[0] = ((long)49280 >> 8) | ((v >> 6) << 27) >> 27;
 		octet[1] = (((long)49280 << 24) >> 24) | (v << 26) >> 26;
 		return ((char *)octet);
 	}
-	else if (size <= 16)
+	else if (size <= 16)// && MB_CUR_MAX > 2)
 		return (between12and16(v));
-	else
+	else //if (MB_CUR_MAX > 3)
 		return (for_more_16(v));
+   /* else
+        return (NULL);*/
 }

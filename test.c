@@ -27,7 +27,10 @@ int		main(void)
 	c = -2147483649;
 	b = 12345;
     ft_printf("\n");
-    ft_printf("%S\n", L"我是一只猫。n");
+    printf("%d\n",ft_printf("%S", NULL));
+    printf("%d\n",printf("%S", NULL));
+    printf("%d\n",ft_printf("%S", L"我是一只猫。n"));
+    printf("%d\n",printf("%S", L"我是一只猫。n"));
     printf("{%010d}\n", 42);
     ft_printf("{%010d}{red}\n", 42);
     printf("{%010d}\n", -42);
@@ -85,6 +88,8 @@ int		main(void)
     printf("  %d\n", ft_printf("%4.15d", 42));
     printf("  %d\n", printf("%4.15d", 42));
     printf("{%-30d}\n", 10000);
+    ft_printf("%4.1S\n", L"Jambon");
+    printf("%4.1S\n", L"Jambon");
 
 //	while(1);
 	return (0);

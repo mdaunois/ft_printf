@@ -74,9 +74,10 @@ char	*if_number(char *flag, int i, char *temp)
 	int j;
 
 	j = 1;
-    temp = ft_strnew(nblen(ft_atoi(&flag[i])));
+    if (!(temp = ft_strnew(nblen(ft_atoi(&flag[i])))))
+        return (0);
 	flag = swapton(flag, i, 0);
-	while (flag[i] >= '0' && flag[i] <= '9')
+    while (flag[i] && flag[i] >= '0' && flag[i] <= '9')
 	{
 		temp[j - 1] = flag[i];
 		i++;

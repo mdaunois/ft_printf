@@ -6,7 +6,7 @@
 #    By: clecalie <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/08 11:07:11 by clecalie          #+#    #+#              #
-#    Updated: 2018/01/12 13:58:57 by mdaunois         ###   ########.fr        #
+#    Updated: 2018/01/22 15:46:52 by mdaunois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,9 +18,11 @@ OBJ = ft_strndup.o ft_atoi.o ft_bzero.o ft_isalnum.o ft_isalpha.o ft_isascii.o f
 
 all: $(NAME)
 
-$(NAME):
-	gcc -Wall -Wextra -Werror -c $(SRCS)
+$(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
+
+%.o: %.c
+	gcc -Wall -Wextra -Werror -c $<
 
 clean:
 	rm -f $(OBJ)
