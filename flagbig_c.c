@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:15:18 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 15:13:57 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/22 17:21:07 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,12 @@ char	*flagbig_c(wchar_t value)
 	unsigned int	v;
 	long			size;
 	char			*octet;
-    char            *bin;
+	char            *bin;
 
 	v = value;
-    bin = (ft_itoabase((unsigned int)value, 2));
+	bin = (ft_itoabase((unsigned int)value, 2));
 	size = ft_strlen(bin);
-    ft_strdel(&bin);
+	ft_strdel(&bin);
 	if (size <= 7)
 	{
 		octet = ft_strnew(1);
@@ -63,6 +63,6 @@ char	*flagbig_c(wchar_t value)
 		return (between12and16(v));
 	else //if (MB_CUR_MAX > 3)
 		return (for_more_16(v));
-   /* else
-        return (NULL);*/
+	/* else
+	   return (NULL);*/
 }

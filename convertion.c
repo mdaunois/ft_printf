@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:14:59 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 15:10:25 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/22 17:18:07 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,30 @@ char	*convparaminbig_c(va_list arg, ...)
 
 char	*convparaminbig_s(va_list arg, ...)
 {
-    wchar_t    *val;
-    int        i;
-    char    *temp;
-    char    *lettre;
-    
-    lettre = NULL;
-    i = 0;
-    val = va_arg(arg, wchar_t*);
-    if (val == NULL)
-        return (NULL);
-    while (val[i])
-    {
-        i++;
-    }
-    temp = ft_strnew(i * 3);
-    i = 0;
-    while (val[i])
-    {
-        lettre = flagbig_c(val[i]);
-        temp = ft_strcat(temp, lettre);//a la place du ft_strcat
-        ft_strdel(&lettre);
-        i++;
-    }
-    return (temp);
+	wchar_t		*val;
+	int			i;
+	char		*temp;
+	char		*lettre;
+
+	lettre = NULL;
+	i = 0;
+	val = va_arg(arg, wchar_t*);
+	if (val == NULL)
+		return (NULL);
+	while (val[i])
+	{
+		i++;
+	}
+	temp = ft_strnew(i * 3);
+	i = 0;
+	while (val[i])
+	{
+		lettre = flagbig_c(val[i]);
+		temp = ft_strcat(temp, lettre);
+		ft_strdel(&lettre);
+		i++;
+	}
+	return (temp);
 }
 
 char	*conv_char(va_list arg)
@@ -62,13 +62,13 @@ char	*conv_char(va_list arg)
 
 char	*conv_adresse(va_list arg, ...)
 {
-    unsigned long    p;
-    char            *temp;
-    char            *val;
-    
-    p = va_arg(arg, unsigned long);
-    temp = ft_itoabase(p, 16);
-    val = ft_strjoin("0x", temp);
-    ft_strdel(&temp);
-    return (val);
+	unsigned long	p;
+	char			*temp;
+	char			*val;
+
+	p = va_arg(arg, unsigned long);
+	temp = ft_itoabase(p, 16);
+	val = ft_strjoin("0x", temp);
+	ft_strdel(&temp);
+	return (val);
 }

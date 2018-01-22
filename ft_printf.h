@@ -42,7 +42,6 @@ char	*flag_neg(char *str, char type, char *val);
 char	*flag_esp(char *str, char type, char *val);
 char	*flag_pos(char type, char *str);
 char	*flag_dies(char type, char *str);
-char	*presition_for_num(char *val, char *debut, size_t cpt, const char *str);
 char	*flag_pres(const char *str, char type, char *val);
 char	*flag_0(const char *str, char type, char *val);
 char	*flag_espifpos(char type, char *str);

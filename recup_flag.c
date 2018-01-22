@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:17:19 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 13:25:04 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/22 17:54:49 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,19 +45,29 @@ char	*cleandouble(char *temp, char type)
 				k--;
 			}
 			else if ((temp[j] == '+') && (temp[k] == ' ' || temp[k] == '+'))
-            {
+			{
 				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
-                k--;
-            }
+				k--;
+			}
 			else if ((ft_strchr("idDoOuUxX", type)) && (temp[j] == '.') &&
-				(temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
-            {
+					(temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
+			{
 				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
-                k--;
-            }
+				k--;
+			}
 		}
 	}
 	return (temp);
+}
+
+int del_one_char(char *temp, int j, int multi)
+{
+	if (multi == 1)
+	{
+		temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
+		j--;
+	}
+	return (1);
 }
 
 char	*cleandouble_2(char *temp)
@@ -69,26 +79,12 @@ char	*cleandouble_2(char *temp)
 	j = -1;
 	while (temp[++j])
 		if (temp[j] == '.')
-		{
-			if (multi == 1)
-            {
-				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-                j--;
-            }
-			multi = 1;
-		}
-    multi = 0;
-    j = -1;
-    while (temp[++j])
-        if (temp[j] == '#')
-        {
-            if (multi == 1)
-            {
-                temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-                j--;
-            }
-            multi = 1;
-        }
+			multi = del_one_char(temp, j, multi);
+	multi = 0;
+	j = -1;
+	while (temp[++j])
+		if (temp[j] == '#')
+			multi = del_one_char(temp, j, multi);
 	multi = 0;
 	j = -1;
 	while (temp[++j])
@@ -107,9 +103,9 @@ char	*recupflag(const char *str, char type, int i)
 	char	*temp;
 	int		multi;
 
-    temp = NULL;
+	temp = NULL;
 	if (!(temp = ft_strndup(&str[i], lenflag(str, &type, i))))
-        return (0);
+		return (0);
 	temp = cleandouble(temp, type);
 	multi = 0;
 	temp = cleandouble_2(temp);

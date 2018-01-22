@@ -6,7 +6,7 @@
 /*   By: clecalie <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/09 13:34:34 by clecalie          #+#    #+#             */
-/*   Updated: 2017/11/10 15:38:21 by clecalie         ###   ########.fr       */
+/*   Updated: 2018/01/22 17:59:06 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char		*ft_itoa(int n)
 		return (0);
 	if (nb == 0)
 	{
-        ft_strdel(&str);
+		ft_strdel(&str);
 		str = ft_strdup("0");
 		return (str);
 	}

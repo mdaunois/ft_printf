@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 11:37:33 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 11:42:35 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/22 18:03:39 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ char		*ft_itoabase(long n, int base)
 		return (0);
 	if (n == 0)
 	{
-        ft_strdel(&str);
+		ft_strdel(&str);
 		str = ft_strdup("0");
 		return (str);
 	}

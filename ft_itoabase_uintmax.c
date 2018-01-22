@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 11:37:57 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 11:40:32 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/22 18:01:42 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char		*ft_itoabase_uintmax(uintmax_t n, int base)
 		return (0);
 	if (n == 0)
 	{
-        ft_strdel(&str);
+		ft_strdel(&str);
 		str = ft_strdup("0");
 		return (str);
 	}
