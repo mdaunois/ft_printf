@@ -119,7 +119,10 @@ int		option(const char *str, int i, int len, va_list arg, ...)
 				flag = recupflag(str, type, i);
 				i = i + len2;
 				len = len - len2 - 1;
-				len = len + do_flag(flag, type, recupval(0, flag, type, arg));
+                len2 = do_flag(flag, type, recupval(0, flag, type, arg));
+                if (len2 == -1)
+                    return (-1);
+				len = len + len2;
 			}
 			else
 				len--;

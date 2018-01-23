@@ -21,7 +21,7 @@ int		main(void)
 	short	b;
 	size_t	t;
 
-	setlocale(LC_ALL, "");
+//	setlocale(LC_ALL, "");
 	t = 420000000;
 	a = -1;
 	c = -2147483649;
@@ -31,6 +31,8 @@ int		main(void)
 	printf("%d\n", printf("%S", NULL));
 	printf("%d\n", ft_printf("%S", L"我是一只猫。n"));
 	printf("%d\n", printf("%S", L"我是一只猫。n"));
+    printf("%d\n", ft_printf("%S", L"affiche le å     "));
+    printf("%d\n", printf("%S", L"affiche le å     "));
 	printf("{%010d}\n", 42);
 	ft_printf("{%010d}{red}\n", 42);
 	printf("{%010d}\n", -42);

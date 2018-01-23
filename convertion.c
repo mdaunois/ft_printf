@@ -33,17 +33,22 @@ char	*convparaminbig_s(va_list arg, ...)
 	if (val == NULL)
 		return (NULL);
 	while (val[i])
-	{
-		i++;
-	}
+    {
+        i++;
+    }
 	temp = ft_strnew(i * 3);
-	i = 0;
-	while (val[i])
+	i = -1;
+	while (val[++i])
 	{
 		lettre = flagbig_c(val[i]);
+        if (!ft_strcmp(lettre, "-1"))
+        {
+            ft_strdel(&lettre);
+            ft_strdel(&temp);
+            return (ft_strdup("-1"));
+        }
 		temp = ft_strcat(temp, lettre);
 		ft_strdel(&lettre);
-		i++;
 	}
 	return (temp);
 }

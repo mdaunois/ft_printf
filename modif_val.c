@@ -113,6 +113,15 @@ int		do_flag(char *flag, char type, char *val)
 	dies = 0;
 	if (flag == 0)
 		return (0);
+    if (val)
+    {
+        if (type == 'S' && !ft_strcmp(val, "-1"))
+        {
+            ft_strdel(&val);
+            ft_strdel(&flag);
+            return (-1);
+        }
+    }
 	if (type == 'c' && !ft_strcmp(val, ""))
 		valc = 0;
 	if (!ft_strcmp(flag, "hhd") && !ft_strcmp(val, "0"))
@@ -132,8 +141,9 @@ int		do_flag(char *flag, char type, char *val)
 			new_flag(flag, todo, 0);
 	}
 	ft_putstr(val);
-	dies = (int)ft_strlen(val);
-	if (dies > 0)
-		ft_strdel(&val);
-	return (dies);
+    dies = (int)ft_strlen(val);
+    if (dies > 0)
+        ft_strdel(&val);
+    return (dies);
+
 }

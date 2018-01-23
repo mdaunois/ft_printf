@@ -6,11 +6,21 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:15:18 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/22 17:21:07 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/23 12:00:05 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+
+char	*between7and11(unsigned int v)
+{
+	char	*octet;
+
+	octet = ft_strnew(2);
+	octet[0] = ((long)49280 >> 8) | ((v >> 6) << 27) >> 27;
+	octet[1] = (((long)49280 << 24) >> 24) | (v << 26) >> 26;
+	return ((char *)octet);
+}
 
 char	*between12and16(unsigned int v)
 {
@@ -35,34 +45,35 @@ char	*for_more_16(unsigned int v)
 	return ((char *)octet);
 }
 
+char	*less7(wchar_t value)
+{
+	char	*octet;
+
+	octet = ft_strnew(1);
+	octet[0] = value;
+	return ((char *)octet);
+}
+
 char	*flagbig_c(wchar_t value)
 {
 	unsigned int	v;
 	long			size;
-	char			*octet;
-	char            *bin;
+	char			*bin;
 
 	v = value;
 	bin = (ft_itoabase((unsigned int)value, 2));
 	size = ft_strlen(bin);
 	ft_strdel(&bin);
 	if (size <= 7)
-	{
-		octet = ft_strnew(1);
-		octet[0] = value;
-		return ((char *)octet);
-	}
-	else if (size <= 11)// && MB_CUR_MAX > 1)
-	{
-		octet = ft_strnew(2);
-		octet[0] = ((long)49280 >> 8) | ((v >> 6) << 27) >> 27;
-		octet[1] = (((long)49280 << 24) >> 24) | (v << 26) >> 26;
-		return ((char *)octet);
-	}
-	else if (size <= 16)// && MB_CUR_MAX > 2)
+		return (less7(v));
+	else if (size <= 11 && MB_CUR_MAX == 1)
+		return (less7(v));
+	else if (size <= 11 && MB_CUR_MAX > 1)
+		return (between7and11(v));
+	else if (size <= 16 && MB_CUR_MAX > 2)
 		return (between12and16(v));
-	else //if (MB_CUR_MAX > 3)
+	else if (MB_CUR_MAX > 3)
 		return (for_more_16(v));
-	/* else
-	   return (NULL);*/
+	else
+		return (ft_strdup("-1"));
 }

@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 11:36:10 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/22 17:57:14 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/23 11:43:07 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,8 +43,7 @@ char		*ft_itoa_long(intmax_t n)
 	if (nb == 0)
 	{
 		ft_strdel(&str);
-		str = ft_strdup("0");
-		return (str);
+		return (ft_strdup("0"));
 	}
 	while (nb != 0)
 	{
