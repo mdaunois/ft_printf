@@ -26,8 +26,15 @@ int		main(void)
 	a = -1;
 	c = -2147483649;
 	b = 12345;
-    ft_printf("% \n");
-    printf("  %d\n", ft_printf("% hZ%"));
+    while(1)
+    {
+    printf("%4.1S\n", L"Jambon");
+    ft_printf("%4.1S\n", L"Jambon");
+    printf("%8.4d\n", 424242424);
+    ft_printf("%8.4d\n", 424242424);
+    printf("%hhd\n", CHAR_MIN - 42);
+    ft_printf("%hhd\n", CHAR_MIN - 42);
+    }
 //	while(1);
 	return (0);
 }

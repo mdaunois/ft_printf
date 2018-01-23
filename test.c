@@ -26,6 +26,8 @@ int		main(void)
 	a = -1;
 	c = -2147483649;
 	b = 12345;
+   // while(1)
+   // {
 	ft_printf("\n");
 	printf("%d\n", ft_printf("%S", NULL));
 	printf("%d\n", printf("%S", NULL));
@@ -92,7 +94,7 @@ int		main(void)
 	printf("{%-30d}\n", 10000);
 	ft_printf("%4.1S\n", L"Jambon");
 	printf("%4.1S\n", L"Jambon");
-
+  //  }
 	//	while(1);
 	return (0);
 }

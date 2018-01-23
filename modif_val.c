@@ -91,7 +91,7 @@ char	*change_val(char *val, char *todo, char type, char *flag, int *dies)
 		val = flag_espifpos(type, val);
 	return (val);
 }
-static void new_flag(char *flag, char *todo, int i)
+static char *new_flag(char *flag, char *todo, int i)
 {
 	char *temp;
 
@@ -100,6 +100,7 @@ static void new_flag(char *flag, char *todo, int i)
 	flag = ft_strdup(temp);
 	ft_strdel(&temp);
 	ft_strdel(&todo);
+    return flag;
 }
 
 int		do_flag(char *flag, char type, char *val)
@@ -114,14 +115,12 @@ int		do_flag(char *flag, char type, char *val)
 	if (flag == 0)
 		return (0);
     if (val)
-    {
         if (type == 'S' && !ft_strcmp(val, "-1"))
         {
             ft_strdel(&val);
             ft_strdel(&flag);
             return (-1);
         }
-    }
 	if (type == 'c' && !ft_strcmp(val, ""))
 		valc = 0;
 	if (!ft_strcmp(flag, "hhd") && !ft_strcmp(val, "0"))
@@ -136,9 +135,9 @@ int		do_flag(char *flag, char type, char *val)
 			return (affiche_val(val, valc, flag));
 		}
 		if (ft_strchr("sScCidDoOuUxX", type) && ft_strchr("lhjz", flag[0]))
-			new_flag(flag, todo, 1);
+			flag = new_flag(flag, todo, 1);
 		else
-			new_flag(flag, todo, 0);
+			flag = new_flag(flag, todo, 0);
 	}
 	ft_putstr(val);
     dies = (int)ft_strlen(val);

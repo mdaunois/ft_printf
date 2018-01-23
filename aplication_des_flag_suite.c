@@ -43,7 +43,8 @@ static char	*presition_num(char *val, char *debut, size_t cpt, const char *str)
 		ft_strdel(&val);
 		return (NULL);
 	}
-	debut = ft_strnew(ft_atoi(&str[1]));
+	if (!(debut = ft_strnew(ft_atoi(&str[1]))))
+        return (0);
 	while (cpt > 0)
 	{
 		debut[cpt - 1] = '0';
@@ -64,14 +65,15 @@ static char	*presition_str(char *val, char *temp, const char *str, char type)
 	{
 		if (type == 'S')
 		{
-			while ((unsigned char)val[ft_atoi(&str[1]) - i] < 192)
+			while ((unsigned char)val[ft_atoi(&str[1]) - i] < 191)
 				i++;
 			if (i > 3)
 				i = 0;
 			else
 				i = i % 3;
 		}
-		temp = ft_strndup(val, ft_atoi(&str[1]) - (i));
+		if(!(temp = ft_strndup(val, ft_atoi(&str[1]) - (i))))
+            return (0);
 		if (ft_strlen(val) > 0)
 			ft_strdel(&val);
 		return (temp);
@@ -82,7 +84,6 @@ static char	*presition_str(char *val, char *temp, const char *str, char type)
 char		*flag_pres(const char *str, char type, char *val)
 {
 	size_t	cpt;
-	char	*temp;
 	int		i;
 
 	i = 0;
