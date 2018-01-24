@@ -31,7 +31,7 @@ char	*conv_adresse(va_list arg, ...);
 char	*convparaminbig_s(va_list arg, ...);
 char	*convparaminbig_c(va_list arg, ...);
 char	*type_param(char str, va_list arg, ...);
-char	*type_param_long(char str, va_list arg, ...);
+char	*type_param_long(char *str, va_list arg, ...);
 char	*type_param_long_long(char str, va_list arg, ...);
 char	*type_param_short(char str, va_list arg, ...);
 char	*type_param_char(char str, va_list arg, ...);

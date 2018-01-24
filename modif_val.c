@@ -30,13 +30,13 @@ int		affiche_val(char *val, int valc, char *flag)
 		ft_strdel(&flag);
 		return (1);
 	}
-	else if (ft_strchr("sS", flag[0]) && val == NULL)
+	/*else if (ft_strchr("sS", flag[0]) && val == NULL)
 	{
 		ft_putstr("(null)");
 		ft_strdel(&flag);
 		return (6);
 	}
-	else
+	*/else
 	{
 		if (ft_strlen(val) > 0)
 		{
@@ -84,7 +84,7 @@ char	*change_val(char *val, char *todo, char type, char *flag, int *dies)
 	if (todo[0] == '.')
 		val = flag_presition(todo, type, val, dies);
 	if (todo[0] == '-')
-		val = flag_neg(flag, type, val);
+		val = flag_neg(todo, type, val);
 	if (todo[0] == '+')
 		val = flag_pos(type, val);
 	if (todo[0] == ' ')
@@ -115,12 +115,14 @@ int		do_flag(char *flag, char type, char *val)
 	if (flag == 0)
 		return (0);
     if (val)
-        if (type == 'S' && !ft_strcmp(val, "-1"))
+        if ((type == 'S' || type == 'C') && !ft_strcmp(val, "-1"))
         {
             ft_strdel(&val);
             ft_strdel(&flag);
             return (-1);
         }
+    if ((type == 's' || type == 'S') && !val)
+        val = ft_strdup("(null)");
 	if (type == 'c' && !ft_strcmp(val, ""))
 		valc = 0;
 	if (!ft_strcmp(flag, "hhd") && !ft_strcmp(val, "0"))

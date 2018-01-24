@@ -43,17 +43,20 @@ char	*cleandouble(char *temp, char type)
 			{
 				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
 				k--;
+                //j--;
 			}
 			else if ((temp[j] == '+') && (temp[k] == ' ' || temp[k] == '+'))
 			{
 				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
 				k--;
+                //j--;
 			}
 			else if ((ft_strchr("idDoOuUxX", type)) && (temp[j] == '.') &&
-					(temp[k] == '0' && (temp[k - 1] < '1' || temp[k - 1] > '9')))
+					(temp[k] == '0' && (k < 0 || (temp[k - 1] < '1' || temp[k - 1] > '9'))))
 			{
 				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
 				k--;
+                j--;
 			}
 		}
 	}
@@ -84,15 +87,24 @@ char	*cleandouble_2(char *temp)
 	j = -1;
 	while (temp[++j])
 		if (temp[j] == '#')
-			multi = del_one_char(temp, j, multi);
+        {
+            if (multi == 1)
+            {
+                temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
+                j--;
+            }
+        multi = 1;
+        }
 	multi = 0;
 	j = -1;
 	while (temp[++j])
-		if (temp[j] == '-' || (temp[j] == '0' &&
-					(temp[j - 1] < '0' || temp[j - 1] > '9') && multi == 1))
+		if (temp[j] == '-')
 		{
 			if (multi == 1)
+            {
 				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
+                j--;
+            }
 			multi = 1;
 		}
 	return (temp);

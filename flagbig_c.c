@@ -66,13 +66,15 @@ char	*flagbig_c(wchar_t value)
 	ft_strdel(&bin);
 	if (size <= 7)
 		return (less7(v));
+    else if ((v >= 0xd800 && v <= 0xdb7f) || (v >= 0xdc00 && v <= 0xdfff))
+        return (ft_strdup("-1"));
 	else if (size <= 11 && MB_CUR_MAX == 1)
 		return (less7(v));
 	else if (size <= 11 && MB_CUR_MAX > 1)
 		return (between7and11(v));
 	else if (size <= 16 && MB_CUR_MAX > 2)
 		return (between12and16(v));
-	else if (MB_CUR_MAX > 3)
+	else if (size <= 20 && MB_CUR_MAX > 3)
 		return (for_more_16(v));
 	else
 		return (ft_strdup("-1"));

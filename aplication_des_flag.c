@@ -74,6 +74,10 @@ char	*flag_pos(char type, char *str)
 	if (ft_strchr("idD", type))
 	{
 		debut = ft_strnew(ft_strlen(str) + 1);
+        if (!str)
+        {
+            return (ft_strdup("+"));
+        }
 		if (str[0] != '-')
 		{
 			ft_strcat(ft_strcat(debut, "+"), str);
@@ -89,7 +93,7 @@ char	*flag_dies(char type, char *str)
 	char	*debut;
 
 	debut = NULL;
-	if (ft_atoi(str) == 0 && (type == 'x' || type == 'X'))
+	if (!ft_strcmp(str, "0") && (type == 'x' || type == 'X'))
 		return (ft_strdup("0"));
 	if (type == 'o' || type == 'O')
 	{

@@ -50,14 +50,14 @@ char	*range_option(char *flag)
 	if (ft_strchr(flag, '#') || ft_strchr(flag, '.') ||
 			ft_strchr(flag, '+') || ft_strchr(flag, ' '))
 		return (premierpartie(flag, temp, -1));
+    i = -1;
+    while (flag[++i])
+        if (flag[i] == '-')
+            return (if_negatif(flag, i, temp));
 	i = -1;
 	while (flag[++i])
 		if (flag[i] == '0' && (i == 0 || (flag[i - 1] < '0' || flag[i - 1] > '9')))
 			return (if_0(flag, i, temp));
-	i = -1;
-	while (flag[++i])
-		if (flag[i] == '-')
-			return (if_negatif(flag, i, temp));
 	i = -1;
 	while (flag[++i])
 		if (flag[i] >= '1' && flag[i] <= '9')
@@ -80,7 +80,7 @@ char	*recupval(char *val, char *flag, char type, va_list arg, ...)
 	else if (ft_strstr(flag, "ll"))
 		val = type_param_long_long(type, arg);
 	else if (ft_strchr(flag, 'l'))
-		val = type_param_long(type, arg);
+		val = type_param_long(&type, arg);
 	else if (ft_strstr(flag, "hh"))
 		val = type_param_char(type, arg);
 	else if (ft_strchr(flag, 'h'))

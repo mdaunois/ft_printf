@@ -18,9 +18,19 @@ static void	exeption(char *val, char *debut)
 
 	if (val[1] == 'x' || val[1] == 'X')
 	{
-		temp = val[1];
-		val[1] = debut[1];
-		debut[1] = temp;
+        if (ft_strlen(debut) > 1)
+        {
+            temp = val[1];
+            val[1] = debut[1];
+            debut[1] = temp;
+        }
+        else
+        {
+            temp = val[1];
+            val[1] = val[0];
+            val[0] = temp;
+            
+        }
 	}
 	if (val[0] == '-')
 	{
@@ -32,7 +42,7 @@ static void	exeption(char *val, char *debut)
 
 static char	*presition_num(char *val, char *debut, size_t cpt, const char *str)
 {
-	if (ft_atoi(&str[1]) < ft_strlen(val))
+	if (cpt >60000 || cpt == 0)
 	{
 		ft_strdel(&debut);
 		return (val);
@@ -87,12 +97,13 @@ char		*flag_pres(const char *str, char type, char *val)
 	int		i;
 
 	i = 0;
-	cpt = ft_atoi(&str[1]) - ft_strlen(val);
-	if (val[0] == '-')
-		cpt++;
-	if ((type == 'x' || type == 'X' || type == 'p') &&
-			(val[1] == 'x' || val[1] == 'X'))
-		cpt = cpt + 2;
+    if ((type == 'x' || type == 'X' || type == 'p') &&
+                (val[1] == 'x' || val[1] == 'X'))
+        cpt = ft_atoi(&str[1]) - (ft_strlen(val) - 2);
+    else if ((val[0] == '-'))// && (ft_atoi(&str[1]) == (ft_strlen(val) + 1)))
+            cpt = ft_atoi(&str[1]) - (ft_strlen(val) - 1);
+    else
+        cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	if (ft_strchr("pdDioOuUxX", type))
 		return (presition_num(val, NULL, cpt, str));
 	if (ft_strchr("sS", type))
@@ -105,8 +116,12 @@ char		*flag_espifpos(char type, char *str)
 	char	*debut;
 
 	debut = ft_strnew(ft_strlen(str) + 1);
-	if (ft_strchr("id", type))
+	if (ft_strchr("idD", type))
 	{
+        if (!str)
+        {
+            return (ft_strdup(" "));
+        }
 		if (str[0] != '-')
 		{
 			ft_strcat(ft_strcat(debut, " "), str);

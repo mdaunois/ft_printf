@@ -39,27 +39,30 @@ char	*type_param(char str, va_list arg, ...)
 	return (0);
 }
 
-char	*type_param_long(char str, va_list arg, ...)
+char	*type_param_long(char *str, va_list arg, ...)
 {
-	if (str == 'd' || str == 'i' || str == 'D')
+	if (*str == 'd' || *str == 'i' || *str == 'D')
 		return (ft_itoa_long(va_arg(arg, long long)));
-	if (str == 'x')
+	if (*str == 'x')
 		return (ft_itoabase_uintmax(va_arg(arg, unsigned long), 16));
-	if (str == 'X')
+	if (*str == 'X')
 		return (mag(ft_itoabase_uintmax(va_arg(arg, unsigned long), 16)));
-	if (str == 'o')
+	if (*str == 'o')
 		return (ft_itoabase_uintmax(va_arg(arg, unsigned long), 8));
-	if (str == 'O')
+	if (*str == 'O')
 		return (ft_itoabase_uintmax(va_arg(arg, unsigned long), 8));
-	if (str == 'u')
+	if (*str == 'u')
 		return (ft_itoa_uim(va_arg(arg, unsigned long)));
-	if (str == 'U')
+	if (*str == 'U')
 		return (ft_itoa_uim(va_arg(arg, unsigned long)));
-	if (str == 'p')
+	if (*str == 'p')
 		return (conv_adresse(arg));
-	if (str == 's')
+	if (*str == 's')
+    {
+        *str = 'S';
 		return (convparaminbig_s(arg));
-	if (str == 'c')
+    }
+	if (*str == 'c')
 		return (convparaminbig_c(arg));
 	return (0);
 }
