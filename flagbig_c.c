@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:15:18 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/23 12:00:05 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 12:03:39 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,8 @@ char	*flagbig_c(wchar_t value)
 	ft_strdel(&bin);
 	if (size <= 7)
 		return (less7(v));
-    else if ((v >= 0xd800 && v <= 0xdb7f) || (v >= 0xdc00 && v <= 0xdfff))
-        return (ft_strdup("-1"));
+	else if ((v >= 0xd800 && v <= 0xdb7f) || (v >= 0xdc00 && v <= 0xdfff))
+		return (ft_strdup("-1"));
 	else if (size <= 11 && MB_CUR_MAX == 1)
 		return (less7(v));
 	else if (size <= 11 && MB_CUR_MAX > 1)

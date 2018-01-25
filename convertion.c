@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:14:59 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/22 17:18:07 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 12:02:22 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,33 +20,29 @@ char	*convparaminbig_c(va_list arg, ...)
 	return (flagbig_c(val));
 }
 
-char	*convparaminbig_s(va_list arg, ...)
+char	*convparaminbig_s(int i, va_list arg, ...)
 {
 	wchar_t		*val;
-	int			i;
 	char		*temp;
 	char		*lettre;
 
 	lettre = NULL;
-	i = 0;
 	val = va_arg(arg, wchar_t*);
 	if (val == NULL)
 		return (NULL);
-	while (val[i])
-    {
-        i++;
-    }
+	while (val[i++])
+		i++;
 	temp = ft_strnew(i * 3);
 	i = -1;
 	while (val[++i])
 	{
 		lettre = flagbig_c(val[i]);
-        if (!ft_strcmp(lettre, "-1"))
-        {
-            ft_strdel(&lettre);
-            ft_strdel(&temp);
-            return (ft_strdup("-1"));
-        }
+		if (!ft_strcmp(lettre, "-1"))
+		{
+			ft_strdel(&lettre);
+			ft_strdel(&temp);
+			return (ft_strdup("-1"));
+		}
 		temp = ft_strcat(temp, lettre);
 		ft_strdel(&lettre);
 	}

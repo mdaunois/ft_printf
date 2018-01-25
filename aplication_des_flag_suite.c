@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:14:33 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/22 17:15:19 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 11:56:03 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,19 +18,18 @@ static void	exeption(char *val, char *debut)
 
 	if (val[1] == 'x' || val[1] == 'X')
 	{
-        if (ft_strlen(debut) > 1)
-        {
-            temp = val[1];
-            val[1] = debut[1];
-            debut[1] = temp;
-        }
-        else
-        {
-            temp = val[1];
-            val[1] = val[0];
-            val[0] = temp;
-            
-        }
+		if (ft_strlen(debut) > 1)
+		{
+			temp = val[1];
+			val[1] = debut[1];
+			debut[1] = temp;
+		}
+		else
+		{
+			temp = val[1];
+			val[1] = val[0];
+			val[0] = temp;
+		}
 	}
 	if (val[0] == '-')
 	{
@@ -42,7 +41,7 @@ static void	exeption(char *val, char *debut)
 
 static char	*presition_num(char *val, char *debut, size_t cpt, const char *str)
 {
-	if (cpt >60000 || cpt == 0)
+	if (cpt > 600000 || cpt == 0)
 	{
 		ft_strdel(&debut);
 		return (val);
@@ -54,7 +53,7 @@ static char	*presition_num(char *val, char *debut, size_t cpt, const char *str)
 		return (NULL);
 	}
 	if (!(debut = ft_strnew(ft_atoi(&str[1]))))
-        return (0);
+		return (0);
 	while (cpt > 0)
 	{
 		debut[cpt - 1] = '0';
@@ -82,8 +81,8 @@ static char	*presition_str(char *val, char *temp, const char *str, char type)
 			else
 				i = i % 3;
 		}
-		if(!(temp = ft_strndup(val, ft_atoi(&str[1]) - (i))))
-            return (0);
+		if (!(temp = ft_strndup(val, ft_atoi(&str[1]) - (i))))
+			return (0);
 		if (ft_strlen(val) > 0)
 			ft_strdel(&val);
 		return (temp);
@@ -97,13 +96,13 @@ char		*flag_pres(const char *str, char type, char *val)
 	int		i;
 
 	i = 0;
-    if ((type == 'x' || type == 'X' || type == 'p') &&
-                (val[1] == 'x' || val[1] == 'X'))
-        cpt = ft_atoi(&str[1]) - (ft_strlen(val) - 2);
-    else if ((val[0] == '-'))// && (ft_atoi(&str[1]) == (ft_strlen(val) + 1)))
-            cpt = ft_atoi(&str[1]) - (ft_strlen(val) - 1);
-    else
-        cpt = ft_atoi(&str[1]) - ft_strlen(val);
+	if ((type == 'x' || type == 'X' || type == 'p') &&
+			(val[1] == 'x' || val[1] == 'X'))
+		cpt = ft_atoi(&str[1]) - (ft_strlen(val) - 2);
+	else if (val[0] == '-')
+		cpt = ft_atoi(&str[1]) - (ft_strlen(val) - 1);
+	else
+		cpt = ft_atoi(&str[1]) - ft_strlen(val);
 	if (ft_strchr("pdDioOuUxX", type))
 		return (presition_num(val, NULL, cpt, str));
 	if (ft_strchr("sS", type))
@@ -118,10 +117,10 @@ char		*flag_espifpos(char type, char *str)
 	debut = ft_strnew(ft_strlen(str) + 1);
 	if (ft_strchr("idD", type))
 	{
-        if (!str)
-        {
-            return (ft_strdup(" "));
-        }
+		if (!str)
+		{
+			return (ft_strdup(" "));
+		}
 		if (str[0] != '-')
 		{
 			ft_strcat(ft_strcat(debut, " "), str);

@@ -6,13 +6,13 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:17:19 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/22 17:54:49 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 11:52:18 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int		lenflag(const char *str, char *type, int i)
+int			lenflag(const char *str, char *type, int i)
 {
 	int j;
 
@@ -26,7 +26,31 @@ int		lenflag(const char *str, char *type, int i)
 	return (j - i);
 }
 
-char	*cleandouble(char *temp, char type)
+static char	*in_loop(char *temp, char type, int *j, int *k)
+{
+	if (*j == *k)
+		*k = *k + 1;
+	if ((temp[*j] == ' ') && (temp[*k] == ' ' || temp[*k] == '+'))
+	{
+		temp = ft_strjoin(ft_strndup(temp, *j), &temp[*j + 1]);
+		*k = *k - 1;
+	}
+	else if ((temp[*j] == '+') && (temp[*k] == ' ' || temp[*k] == '+'))
+	{
+		temp = ft_strjoin(ft_strndup(temp, *k), &temp[*k + 1]);
+		*k = *k - 1;
+	}
+	else if ((ft_strchr("idDoOuUxX", type)) && (temp[*j] == '.') &&
+	(temp[*k] == '0' && (*k < 0 || (temp[*k - 1] < '1' || temp[*k - 1] > '9'))))
+	{
+		temp = ft_strjoin(ft_strndup(temp, *k), &temp[*k + 1]);
+		*k = *k - 1;
+		*j = *j - 1;
+	}
+	return (temp);
+}
+
+char		*cleandouble(char *temp, char type)
 {
 	int j;
 	int k;
@@ -36,81 +60,39 @@ char	*cleandouble(char *temp, char type)
 	{
 		k = -1;
 		while (temp[++k])
-		{
-			if (j == k)
-				k++;
-			if ((temp[j] == ' ') && (temp[k] == ' ' || temp[k] == '+'))
-			{
-				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-				k--;
-                //j--;
-			}
-			else if ((temp[j] == '+') && (temp[k] == ' ' || temp[k] == '+'))
-			{
-				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
-				k--;
-                //j--;
-			}
-			else if ((ft_strchr("idDoOuUxX", type)) && (temp[j] == '.') &&
-					(temp[k] == '0' && (k < 0 || (temp[k - 1] < '1' || temp[k - 1] > '9'))))
-			{
-				temp = ft_strjoin(ft_strndup(temp, k), &temp[k + 1]);
-				k--;
-                j--;
-			}
-		}
+			temp = in_loop(temp, type, &j, &k);
 	}
 	return (temp);
 }
 
-int del_one_char(char *temp, int j, int multi)
+char		*cleandouble_2(char *temp, int multi, int multi2)
 {
-	if (multi == 1)
-	{
-		temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-		j--;
-	}
-	return (1);
-}
-
-char	*cleandouble_2(char *temp)
-{
-	int multi;
 	int j;
 
-	multi = 0;
-	j = -1;
-	while (temp[++j])
-		if (temp[j] == '.')
-			multi = del_one_char(temp, j, multi);
-	multi = 0;
 	j = -1;
 	while (temp[++j])
 		if (temp[j] == '#')
-        {
-            if (multi == 1)
-            {
-                temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-                j--;
-            }
-        multi = 1;
-        }
-	multi = 0;
-	j = -1;
-	while (temp[++j])
-		if (temp[j] == '-')
 		{
 			if (multi == 1)
-            {
+			{
 				temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-                j--;
-            }
+				j--;
+			}
 			multi = 1;
 		}
+	if (temp[j] == '-')
+	{
+		if (multi2 == 1)
+		{
+			temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
+			j--;
+		}
+		multi2 = 1;
+	}
 	return (temp);
 }
 
-char	*recupflag(const char *str, char type, int i)
+char		*recupflag(const char *str, char type, int i)
 {
 	char	*temp;
 	int		multi;
@@ -120,6 +102,6 @@ char	*recupflag(const char *str, char type, int i)
 		return (0);
 	temp = cleandouble(temp, type);
 	multi = 0;
-	temp = cleandouble_2(temp);
+	temp = cleandouble_2(temp, 0, 0);
 	return (temp);
 }

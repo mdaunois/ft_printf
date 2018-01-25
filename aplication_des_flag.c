@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:13:37 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/22 17:16:33 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 11:54:14 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ char	*flag_pos(char type, char *str)
 	if (ft_strchr("idD", type))
 	{
 		debut = ft_strnew(ft_strlen(str) + 1);
-        if (!str)
-        {
-            return (ft_strdup("+"));
-        }
+		if (!str)
+		{
+			return (ft_strdup("+"));
+		}
 		if (str[0] != '-')
 		{
 			ft_strcat(ft_strcat(debut, "+"), str);

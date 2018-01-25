@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:17:38 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 15:12:11 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 12:03:53 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,10 @@ char	*type_param_long(char *str, va_list arg, ...)
 	if (*str == 'p')
 		return (conv_adresse(arg));
 	if (*str == 's')
-    {
-        *str = 'S';
-		return (convparaminbig_s(arg));
-    }
+	{
+		*str = 'S';
+		return (convparaminbig_s(0, arg));
+	}
 	if (*str == 'c')
 		return (convparaminbig_c(arg));
 	return (0);

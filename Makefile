@@ -6,7 +6,7 @@
 #    By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/11/29 15:12:41 by clecalie          #+#    #+#              #
-#    Updated: 2018/01/15 16:46:47 by mdaunois         ###   ########.fr        #
+#    Updated: 2018/01/25 16:11:00 by mdaunois         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -27,7 +27,9 @@ SRCS =	ft_printf.c\
 		recup_flag.c\
 		modif_val.c\
 		flag_a_appliquer.c\
-		flagbig_c.c
+		flagbig_c.c\
+		change_val.c\
+		color.c
 
 OBJ = $(SRCS:.c=.o)
 
