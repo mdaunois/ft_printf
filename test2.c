@@ -21,20 +21,21 @@ int		main(void)
 	short	b;
 	size_t	t;
 
-	setlocale(LC_ALL, "");
+//	setlocale(LC_ALL, "");
 	t = 420000000;
 	a = -1;
 	c = -2147483649;
 	b = 12345;
-	wchar_t    s[4];
-
-	s[0] = 0x53;
-	s[1] = 0x3abc;
-	s[2] = 0x81000;
-	s[3] = '\0';
-	//  	while(1)
+    wchar_t    s[4];
+    
+    s[0] = 'S';
+    s[1] = 256;
+    s[2] = 'u';
+    s[3] = '\0';	//  	while(1)
 	//   {
-	printf("%S\n", L"J我是一只猫");
+    printf(" %d\n", ft_printf("%.1ls", s));
+    printf(" %d\n", printf("%.1ls", s));
+	/*printf("%S\n", L"J我是一只猫");
 	ft_printf("%S\n", L"J我是一只猫");
 	printf("%8.4d\n", 424242424);
 	ft_printf("%8.4d\n", 424242424);
@@ -66,7 +67,7 @@ int		main(void)
 	printf("{%0-3d}\n", 0);
 	ft_printf("coco et %-#-#--24O titi%#012o\n", 12, -874);
 	ft_printf("%+  d\n", 42);
-	ft_printf("% ++d\n", 42);
+	ft_printf("% ++d\n", 42);*/
 	//}
 	//	while(1);
 	return (0);

@@ -33,7 +33,7 @@ char		*recupval(char *val, char *flag, char type, va_list arg, ...)
 	else if (ft_strstr(flag, "ll"))
 		val = type_param_long_long(type, arg);
 	else if (ft_strchr(flag, 'l'))
-		val = type_param_long(&type, arg);
+		val = type_param_long(type, arg);
 	else if (ft_strstr(flag, "hh"))
 		val = type_param_char(type, arg);
 	else if (ft_strchr(flag, 'h'))

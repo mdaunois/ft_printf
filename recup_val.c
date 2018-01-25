@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:17:38 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 12:03:53 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:41:25 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,30 +39,27 @@ char	*type_param(char str, va_list arg, ...)
 	return (0);
 }
 
-char	*type_param_long(char *str, va_list arg, ...)
+char	*type_param_long(char type, va_list arg, ...)
 {
-	if (*str == 'd' || *str == 'i' || *str == 'D')
+	if (type == 'd' || type == 'i' || type == 'D')
 		return (ft_itoa_long(va_arg(arg, long long)));
-	if (*str == 'x')
+	if (type == 'x')
 		return (ft_itoabase_uintmax(va_arg(arg, unsigned long), 16));
-	if (*str == 'X')
+	if (type == 'X')
 		return (mag(ft_itoabase_uintmax(va_arg(arg, unsigned long), 16)));
-	if (*str == 'o')
+	if (type == 'o')
 		return (ft_itoabase_uintmax(va_arg(arg, unsigned long), 8));
-	if (*str == 'O')
+	if (type == 'O')
 		return (ft_itoabase_uintmax(va_arg(arg, unsigned long), 8));
-	if (*str == 'u')
+	if (type == 'u')
 		return (ft_itoa_uim(va_arg(arg, unsigned long)));
-	if (*str == 'U')
+	if (type == 'U')
 		return (ft_itoa_uim(va_arg(arg, unsigned long)));
-	if (*str == 'p')
+	if (type == 'p')
 		return (conv_adresse(arg));
-	if (*str == 's')
-	{
-		*str = 'S';
+	if (type == 's')
 		return (convparaminbig_s(0, arg));
-	}
-	if (*str == 'c')
+	if (type == 'c')
 		return (convparaminbig_c(arg));
 	return (0);
 }

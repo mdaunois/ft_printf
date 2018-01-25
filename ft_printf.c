@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:16:01 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 16:21:27 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:37:57 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,7 @@ static int	new_arg(const char *str, int *i, int len, va_list arg, ...)
 		len = len - len2 - 1;
 		len2 = do_flag(flag, type, recupval(0, flag, type, arg), -1);
 		if (len2 == -1)
-			return (-1);
+			return (-500);
 		return ((len + len2));
 	}
 	else
@@ -102,6 +102,8 @@ int			option(const char *str, int i, int len, va_list arg, ...)
 			if (!str[i])
 				return (len + i - 1);
 			len = new_arg(str, &i, len, arg);
+			if (len == -500)
+				return (-1);
 		}
 		else if (str[i] == '{')
 			len = color_flag(str, &i, len);

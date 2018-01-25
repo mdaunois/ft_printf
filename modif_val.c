@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:16:40 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 16:13:30 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/25 17:39:10 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,10 @@ int			do_flag(char *flag, char type, char *val, int valc)
 {
 	if (flag == 0)
 		return (0);
+	if ((ft_strchr(flag, 'l') && type == 'c'))
+		type = 'C';
+	if ((ft_strchr(flag, 'l') && type == 's'))
+		type = 'S';
 	if (val)
 		if ((type == 'S' || type == 'C') && !ft_strcmp(val, "-1"))
 		{

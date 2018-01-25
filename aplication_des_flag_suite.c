@@ -72,7 +72,7 @@ static char	*presition_str(char *val, char *temp, const char *str, char type)
 	i = 0;
 	if (ft_atoi(&str[1]) < (int)ft_strlen(val))
 	{
-		if (type == 'S')
+		if (type == 'S' && MB_CUR_MAX > 1)
 		{
 			while ((unsigned char)val[ft_atoi(&str[1]) - i] < 191)
 				i++;
