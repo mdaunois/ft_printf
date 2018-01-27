@@ -20,7 +20,9 @@ char	*if_point(char *flag, int i, char *temp)
 	temp = ft_strnew(nblen(ft_atoi(&flag[i + 1])) + 1);
 	flag = swapton(flag, i, 0);
 	temp[j - 1] = '.';
-	i++;
+    i++;
+    if (flag[i] == '0')
+        return (ft_strdup(".0"));
 	while (flag[i] >= '0' && flag[i] <= '9')
 	{
 		temp[j] = flag[i];

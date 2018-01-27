@@ -28,16 +28,21 @@ int		main(void)
 	b = 12345;
     wchar_t    s[4];
     
-    s[0] = 'S';
-    s[1] = 256;
-    s[2] = 'u';
-    s[3] = '\0';	//  	while(1)
+    s[0] = 0x53;
+    s[1] = 0x3abc;
+    s[2] = 0x81000;
+    s[3] = '\0';
+    //  	while(1)
 	//   {
-    printf(" %d\n", ft_printf("%.1ls", s));
-    printf(" %d\n", printf("%.1ls", s));
-	/*printf("%S\n", L"J我是一只猫");
-	ft_printf("%S\n", L"J我是一只猫");
-	printf("%8.4d\n", 424242424);
+    //ft_printf("%-33..12..+d\n", 256);
+    //printf("%-33..12..+d\n", 256);
+    ft_printf("%###-#0000 33...12..#0+0d\n", 256);
+    printf("%###-#0000 33...12..#0+0d\n", 256);
+    //printf(" %d\n", ft_printf("yo%2C%-12lc et %C titi %C tyty", 'u', 254, 256, 'a'));
+    //printf(" %d\n", printf("yo%2C%-12lc et %C titi %C tyty", 'u', 254, 256, 'a'));
+	//printf(" %d\n", printf("%4.1S", L"Jambon"));
+	//printf(" %d\n", ft_printf("%4.1S", L"Jambon"));
+	/*printf("%8.4d\n", 424242424);
 	ft_printf("%8.4d\n", 424242424);
 	printf("%hhd\n", CHAR_MIN - 42);
 	ft_printf("%hhd\n", CHAR_MIN - 42);

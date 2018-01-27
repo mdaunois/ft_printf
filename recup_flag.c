@@ -80,28 +80,42 @@ char		*cleandouble_2(char *temp, int multi, int multi2)
 			}
 			multi = 1;
 		}
-	if (temp[j] == '-')
-	{
-		if (multi2 == 1)
-		{
-			temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
-			j--;
-		}
-		multi2 = 1;
-	}
+        else if (temp[j] == '-')
+        {
+            if (multi2 == 1)
+            {
+                temp = ft_strjoin(ft_strndup(temp, j), &temp[j + 1]);
+                j--;
+            }
+            multi2 = 1;
+        }
+        else if (temp[j] == '.' && temp[j + 1] == '0' && temp[j + 2])
+            temp = ft_strjoin(ft_strndup(temp, j + 1), &temp[j + 2]);
 	return (temp);
 }
 
 char		*recupflag(const char *str, char type, int i)
 {
 	char	*temp;
-	int		multi;
-
+    int j;
+    int k;
+    
+    j = -1;
 	temp = NULL;
 	if (!(temp = ft_strndup(&str[i], lenflag(str, &type, i))))
 		return (0);
 	temp = cleandouble(temp, type);
-	multi = 0;
 	temp = cleandouble_2(temp, 0, 0);
+    while (temp[++j])
+    {
+        if (temp[j] == '.')
+        {
+            k = j + 1;
+            while (temp[k] >'0' && temp[k] <'9')
+                k++;
+            if (temp[k] == '.')
+                temp = ft_strjoin(ft_strndup(temp, j), &temp[k]);
+        }
+    }
 	return (temp);
 }

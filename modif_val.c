@@ -14,6 +14,9 @@
 
 int			affiche_val(char *val, int valc, char type, int len)
 {
+    int i;
+    
+    i = 0;
 	if (valc == 0)
 	{
 		if (ft_strlen(val) > 0)
@@ -29,6 +32,16 @@ int			affiche_val(char *val, int valc, char type, int len)
 	}
 	else
 	{
+        if (ft_strchr("SC", type))
+            while (val[i])
+            {
+                if (val[i] == '-' && val[i + 1] == '1')
+                {
+                    ft_strdel(&val);
+                    return (-1);
+                }
+                i++;
+            }
 		if (ft_strlen(val) > 0)
 		{
 			len = (int)ft_strlen(val);

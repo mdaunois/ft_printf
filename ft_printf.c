@@ -82,7 +82,12 @@ static int	new_arg(const char *str, int *i, int len, va_list arg, ...)
 	{
 		len2 = lenflag(str, &type, *i);
 		flag = recupflag(str, type, *i);
-		*i = *i + len2;
+        if (type == 10 || type == 0)
+        {
+            *i = *i + len2 - 1;
+            return (-len2);
+        }
+        *i = *i + len2;
 		len = len - len2 - 1;
 		len2 = do_flag(flag, type, recupval(0, flag, type, arg), -1);
 		if (len2 == -1)

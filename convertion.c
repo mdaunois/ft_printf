@@ -37,12 +37,12 @@ char	*convparaminbig_s(int i, va_list arg, ...)
 	while (val[++i])
 	{
 		lettre = flagbig_c(val[i]);
-		if (!ft_strcmp(lettre, "-1"))
-		{
-			ft_strdel(&lettre);
-			ft_strdel(&temp);
-			return (ft_strdup("-1"));
-		}
+	//	if (!ft_strcmp(lettre, "-1"))
+	//	{
+	//		ft_strdel(&lettre);
+	//		ft_strdel(&temp);
+	//		return (ft_strdup("-1"));
+	//	}
 		temp = ft_strcat(temp, lettre);
 		ft_strdel(&lettre);
 	}
