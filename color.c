@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/25 16:01:10 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 16:16:24 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/31 13:11:31 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ int			color_flag(const char *str, int *i, int len)
 {
 	int		j;
 	char	*flag;
+	int		len2;
 
+	len2 = 0;
 	j = *i + 1;
 	while (str[j] != '}' && str[j])
 		j++;
@@ -69,14 +71,15 @@ int			color_flag(const char *str, int *i, int len)
 	if (debut_color(flag, len) != 0)
 	{
 		*i = j + 1;
-		return (debut_color(flag, len));
+		len2 = (debut_color(flag, len));
 	}
 	else if (fin_color(flag, len) != 0)
 	{
 		*i = j + 1;
-		return (fin_color(flag, len));
+		len2 = (fin_color(flag, len));
 	}
 	ft_putchar(str[*i]);
 	*i = *i + 1;
-	return (0);
+	ft_strdel(&flag);
+	return (len2);
 }

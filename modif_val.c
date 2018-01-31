@@ -6,53 +6,11 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:16:40 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 17:39:10 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/31 14:43:44 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-
-int			affiche_val(char *val, int valc, char type, int len)
-{
-    int i;
-    
-    i = 0;
-	if (valc == 0)
-	{
-		if (ft_strlen(val) > 0)
-			val[ft_strlen(val) - 1] = 0;
-		ft_putstr(val);
-		ft_putchar(0);
-		return ((int)ft_strlen(val) + 1);
-	}
-	else if ((ft_strchr("cC", type) && val[0] == 0))
-	{
-		ft_putchar(0);
-		return (1);
-	}
-	else
-	{
-        if (ft_strchr("SC", type))
-            while (val[i])
-            {
-                if (val[i] == '-' && val[i + 1] == '1')
-                {
-                    ft_strdel(&val);
-                    return (-1);
-                }
-                i++;
-            }
-		if (ft_strlen(val) > 0)
-		{
-			len = (int)ft_strlen(val);
-			ft_putstr(val);
-			ft_strdel(&val);
-			return (len);
-		}
-		ft_putstr(val);
-		return (len);
-	}
-}
 
 char		*flag_presition(char *todo, char type, char *val, int *dies)
 {
@@ -61,7 +19,7 @@ char		*flag_presition(char *todo, char type, char *val, int *dies)
 	if (type == 'p' && ft_strstr(val, "0x0") && !val[3])
 		return (ft_strdup("0x"));
 	if (*dies == 1 && !ft_strcmp(val, "0") && (type == 'o' || type == 'O'))
-		return (ft_strdup("0"));
+		return (val);
 	if (ft_atoi(&todo[1]) == 0 && (type == 's' || type == 'S'))
 		return (ft_strdup(""));
 	if (val && val[0] == '0' && !val[1])

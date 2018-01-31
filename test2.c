@@ -34,15 +34,15 @@ int		main(void)
     s[3] = '\0';
     //  	while(1)
 	//   {
-    //ft_printf("%-33..12..+d\n", 256);
-    //printf("%-33..12..+d\n", 256);
+    ft_printf("%-33..12..+d\n", 256);
+    printf("%-33..12..+d\n", 256);
     ft_printf("%###-#0000 33...12..#0+0d\n", 256);
     printf("%###-#0000 33...12..#0+0d\n", 256);
-    //printf(" %d\n", ft_printf("yo%2C%-12lc et %C titi %C tyty", 'u', 254, 256, 'a'));
-    //printf(" %d\n", printf("yo%2C%-12lc et %C titi %C tyty", 'u', 254, 256, 'a'));
-	//printf(" %d\n", printf("%4.1S", L"Jambon"));
-	//printf(" %d\n", ft_printf("%4.1S", L"Jambon"));
-	/*printf("%8.4d\n", 424242424);
+    printf(" %d\n", ft_printf("yo%2C%-12lc et %C titi %C tyty", 'u', 254, 256, 'a'));
+    printf(" %d\n", printf("yo%2C%-12lc et %C titi %C tyty", 'u', 254, 256, 'a'));
+	printf(" %d\n", printf("%4.1S", L"Jambon"));
+	printf(" %d\n", ft_printf("%4.1S", L"Jambon"));
+	printf("%8.4d\n", 424242424);
 	ft_printf("%8.4d\n", 424242424);
 	printf("%hhd\n", CHAR_MIN - 42);
 	ft_printf("%hhd\n", CHAR_MIN - 42);
@@ -72,8 +72,8 @@ int		main(void)
 	printf("{%0-3d}\n", 0);
 	ft_printf("coco et %-#-#--24O titi%#012o\n", 12, -874);
 	ft_printf("%+  d\n", 42);
-	ft_printf("% ++d\n", 42);*/
+	ft_printf("% ++d\n", 42);
 	//}
-	//	while(1);
+    while(1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:13:37 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 11:54:14 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/01/31 18:01:41 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,13 +94,13 @@ char	*flag_dies(char type, char *str)
 
 	debut = NULL;
 	if (!ft_strcmp(str, "0") && (type == 'x' || type == 'X'))
-		return (ft_strdup("0"));
+		return (str);
 	if (type == 'o' || type == 'O')
 	{
 		if (ft_atoi(str) == 0)
-			return (ft_strdup("0"));
+			return (str);
 		debut = ft_strnew(ft_strlen(str) + 1);
-		ft_strcat(ft_strcat(debut, "0"), str);
+		ft_strjoin_free(ft_strjoin_free(debut, "0"), str);
 		ft_strdel(&str);
 		return (debut);
 	}
@@ -132,11 +132,13 @@ char	*flag_0(const char *str, char type, char *val)
 		debut[cpt - 1] = '0';
 		cpt--;
 	}
-	if (type == 's' && val == NULL)
-		return (debut);
-	val = swap_if(val, debut);
-	ft_strcat(debut, val);
-	if (ft_strlen(val) > 0)
+	if ((type == 's') && val == NULL)
+	{
 		ft_strdel(&val);
+		return (debut);
+	}
+	val = swap_if(val, debut);
+	debut = ft_strcat(debut, val);
+	ft_strdel(&val);
 	return (debut);
 }
