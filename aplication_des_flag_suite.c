@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:14:33 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 11:56:03 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/02/01 12:07:51 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ char		*flag_espifpos(char type, char *str)
 	{
 		if (!str)
 		{
+			ft_strdel(&debut);
+			ft_strdel(&str);
 			return (ft_strdup(" "));
 		}
 		if (str[0] != '-')
@@ -128,5 +130,6 @@ char		*flag_espifpos(char type, char *str)
 			return (debut);
 		}
 	}
+	ft_strdel(&debut);
 	return (str);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 14:55:50 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/25 16:20:02 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/02/01 14:10:18 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,5 +66,6 @@ char	*flagbig_c(wchar_t value);
 int		color_flag(const char *str, int *i, int len);
 int		option(const char *str, int i, int len, va_list arg, ...);
 int		ft_printf(const char *str, ...);
+char	*remove_one_char(char *temp, int j, char *temp2, int i);
 
 #endif

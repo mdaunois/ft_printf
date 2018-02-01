@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:16:40 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/31 14:43:44 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/02/01 14:23:24 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,22 @@ char		*flag_presition(char *todo, char type, char *val, int *dies)
 	if (todo[1] && (todo[1] >= '1' && todo[1] <= '9'))
 		return (flag_pres(todo, type, val));
 	if (type == 'p' && ft_strstr(val, "0x0") && !val[3])
+	{
+		ft_strdel(&val);
 		return (ft_strdup("0x"));
+	}
 	if (*dies == 1 && !ft_strcmp(val, "0") && (type == 'o' || type == 'O'))
 		return (val);
 	if (ft_atoi(&todo[1]) == 0 && (type == 's' || type == 'S'))
+	{
+		ft_strdel(&val);
 		return (ft_strdup(""));
+	}
 	if (val && val[0] == '0' && !val[1])
+	{
+		ft_strdel(&val);
 		return (NULL);
+	}
 	return (val);
 }
 
@@ -68,11 +77,12 @@ static int	loop_todo(char *flag, char type, char **val, int valc)
 int			do_flag(char *flag, char type, char *val, int valc)
 {
 	if (flag == 0)
+	{
+		ft_strdel(&val);
 		return (0);
-	if ((ft_strchr(flag, 'l') && type == 'c'))
-		type = 'C';
-	if ((ft_strchr(flag, 'l') && type == 's'))
-		type = 'S';
+	}
+	if ((ft_strchr(flag, 'l') && (type == 's' || type == 'c')))
+		type = ft_toupper(type);
 	if (val)
 		if ((type == 'S' || type == 'C') && !ft_strcmp(val, "-1"))
 		{
@@ -88,7 +98,6 @@ int			do_flag(char *flag, char type, char *val, int valc)
 		return (affiche_val(val, valc, type, 0));
 	ft_putstr(val);
 	valc = (int)ft_strlen(val);
-	if (valc > 0)
-		ft_strdel(&val);
+	ft_strdel(&val);
 	return (valc);
 }

@@ -6,7 +6,7 @@
 /*   By: mdaunois <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/15 13:17:03 by mdaunois          #+#    #+#             */
-/*   Updated: 2018/01/15 14:49:49 by mdaunois         ###   ########.fr       */
+/*   Updated: 2018/02/01 14:09:47 by mdaunois         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,4 +70,13 @@ long	nblen(long nb)
 		i++;
 	}
 	return (i);
+}
+
+char	*remove_one_char(char *temp, int j, char *temp2, int i)
+{
+	temp2 = ft_strjoin_free(ft_strndup(temp, j), &temp[j + i]);
+	ft_strdel(&temp);
+	temp = ft_strdup(temp2);
+	ft_strdel(&temp2);
+	return (temp);
 }
